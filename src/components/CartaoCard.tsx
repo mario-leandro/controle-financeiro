@@ -14,7 +14,7 @@ export default function CartaoCard() {
 
         <p className="text-xl text-violet-950 font-semibold">R$ 0,00</p>
 
-        <p className="text-sm text-violet-500 font-medium">Limite: R$ 0,00</p>
+        <p className="text-sm text-violet-900 font-medium">Limite: R$ 0,00</p>
       </div>
     </div>
   );
