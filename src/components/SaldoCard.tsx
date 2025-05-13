@@ -6,10 +6,10 @@ export default function SaldoCard() {
       <div className="flex flex-col gap-3">
         <div className="flex flex-row items-center gap-2">
           <Wallet className="text-violet-900" />
-          <p className="text-lg text-violet-900 font-medium">Carteira</p>
+          <p className="text-base md:text-lg text-violet-900 font-medium">Carteira</p>
         </div>
 
-        <p className="text-xl text-violet-950 font-semibold">R$ 0,00</p>
+        <p className="text-lg md:text-xl text-violet-950 font-semibold">R$ 0,00</p>
       </div>
     </div>
   );

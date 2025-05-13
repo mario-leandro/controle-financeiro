@@ -7,14 +7,14 @@ export default function CartaoCard() {
         <div className="flex flex-row items-center gap-2">
           <CreditCard className="text-violet-900" />
 
-          <p className="text-lg text-violet-900 font-medium">
+          <p className="text-base md:text-lg text-violet-900 font-medium">
             Cartão de Credito
           </p>
         </div>
 
-        <p className="text-xl text-violet-950 font-semibold">R$ 0,00</p>
+        <p className="text-lg md:text-xl text-violet-950 font-semibold">R$ 0,00</p>
 
-        <p className="text-sm text-violet-900 font-medium">Limite: R$ 0,00</p>
+        <p className="text-xs md:text-sm text-violet-900 font-medium">Limite: R$ 0,00</p>
       </div>
     </div>
   );
