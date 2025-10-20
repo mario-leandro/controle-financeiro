@@ -3,6 +3,7 @@ import CartaoCard from "@/components/CartaoCard";
 import BotaoFlutuante from "@/components/BotaoFlutuante";
 import TransacoesRecebidas from "@/components/TransacoesRecentes";
 import NavegacaoUsuario from "../NavegacaoUsuario";
+import Modal from "../modal";
 
 export default function Main() {
   return (
@@ -22,6 +23,9 @@ export default function Main() {
 
         {/* Botão para adicionar receita/despesa */}
         <BotaoFlutuante />
+
+        {/* Modal para escolher opções de ganho e gasto */}
+        <Modal />
       </div>
     </div>
   );

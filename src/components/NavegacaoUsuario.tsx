@@ -1,5 +1,6 @@
 import Image from "next/image";
 import userPhoto from "@/assets/user-photo.jpg";
+import { Cog } from "lucide-react";
 // import { Cog } from "lucide-react";
 
 export default function NavegacaoUsuario() {
@@ -16,14 +17,14 @@ export default function NavegacaoUsuario() {
         <p className="text-base md:text-lg font-semibold text-violet-900">Mario Marques</p>
       </div>
 
-      {/* <div className="h-full flex justify-center items-center">
+      <div className="h-full flex justify-center items-center">
         <span className="flex flex-row justify-center items-center gap-1 cursor-pointer">
           <Cog className="text-violet-900" />
           <p className="text-lg font-semibold text-violet-900 hidden md:block">
             Configurações
           </p>
         </span>
-      </div> */}
+      </div>
     </div>
   );
 }
