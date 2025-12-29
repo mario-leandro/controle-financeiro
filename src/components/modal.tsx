@@ -1,8 +1,9 @@
+"use client"
+export default function Modal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+    if (!isOpen) return null;
 
-
-export default function Modal() {
     return (
-        <div className="fixed bottom-24 right-6 flex justify-center items-center">
+        <div className="fixed bottom-24 right-6 flex justify-center items-center" onClick={onClose}>
             <div className="bg-white p-6 rounded-lg shadow-lg">
                 <h2 className="text-xl font-bold mb-4">Escolha uma opção</h2>
                 <div className="flex flex-col gap-4">

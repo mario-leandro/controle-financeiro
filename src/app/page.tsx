@@ -1,10 +1,10 @@
 
-import Main from "@/components/Main";
+import Login from "@/pages/auth/login";
 
 export default function Home() {
     return (
-        <div className="bg-violet-200">
-            <Main />
+        <div className="min-h-screen bg-violet-200 flex justify-center items-center">
+            <Login />
         </div>
     )
 }
