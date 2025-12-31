@@ -15,25 +15,27 @@ export default function Main() {
   }
 
   return (
-    <div className="w-full flex justify-center items-start">
-      <div className="max-w-7xl w-full flex flex-col justify-start items-start p-3 md:p-5 gap-5">
+    <div className="w-full h-screen flex justify-center items-start">
+      <div className="w-full h-full flex flex-row justify-start items-start p-3 md:p-5 gap-5">
         {/* Navegação do Usuario */}
         <NavegacaoUsuario />
 
-        {/* Carteira */}
-        <SaldoCard />
+        <div className="w-full h-full flex flex-col gap-5">
+          {/* Carteira */}
+          <SaldoCard />
 
-        {/* Cartão de Credito */}
-        <CartaoCard />
+          {/* Cartão de Credito */}
+          <CartaoCard />
 
-        {/* Transacoes Recebidas */}
-        <TransacoesRecebidas />
+          {/* Transacoes Recebidas */}
+          <TransacoesRecebidas />
 
-        {/* Botão para adicionar receita/despesa */}
-        <BotaoFlutuante onClick={toggleModal} />
+          {/* Botão para adicionar receita/despesa */}
+          <BotaoFlutuante onClick={toggleModal} />
 
-        {/* Modal para escolher opções de ganho e gasto */}
-        <Modal isOpen={isModalOpen} onClose={toggleModal} />
+          {/* Modal para escolher opções de ganho e gasto */}
+          <Modal isOpen={isModalOpen} onClose={toggleModal} />
+        </div>
       </div>
     </div>
   );

@@ -43,8 +43,9 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-body {
+html, body {
   font-family: "Inter", Helvetica, sans-serif;
+  background: #ddd6ff;
 }
 
 :root {
@@ -123,8 +124,4 @@ body {
   body {
     @apply bg-background text-foreground;
   }
-}
-
-html {
-  background: #ddd6ff;
 }
