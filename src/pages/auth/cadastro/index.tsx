@@ -1,10 +1,38 @@
 import "@/styles/globals.css";
+import { criarUsuario } from "@/services/routes_api";
+import { useState } from "react";
 
 interface CadastroProps {
     onToggle: () => void;
 }
 
 export default function Cadastro({ onToggle }: CadastroProps) {
+    const [nome, setNome] = useState("");
+    const [email, setEmail] = useState("");
+    const [senha, setSenha] = useState("");
+    const [confirmaSenha, setConfirmaSenha] = useState("");
+    const [error, setError] = useState("");
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setError("");
+
+        if (senha !== confirmaSenha) {
+            setError("As senhas não coincidem.");
+            console.log("As senhas não coincidem. " + senha + " " + confirmaSenha);
+            alert("As senhas não coincidem.");
+            return;
+        }
+
+        try {
+            await criarUsuario({ nome, email, senha });
+            alert("Usuário criado com sucesso! Agora você pode fazer login.");
+            onToggle();
+        } catch (err) {
+            setError("Erro ao criar usuário. Tente novamente.");
+        }
+    }
+
     return (
         // cadastro container
         <div className="w-96 min-h-96 bg-violet-300 px-6 py-10 rounded-lg shadow-lg flex flex-col justify-between items-center">
@@ -14,16 +42,16 @@ export default function Cadastro({ onToggle }: CadastroProps) {
             </div>
 
             {/* cadastro form */}
-            <div className="w-full flex flex-col gap-4 mb-6">
+            <form method="POST" onSubmit={handleSubmit} className="w-full flex flex-col gap-4 mb-6">
                 <div className="flex flex-col gap-4">
-                    <input type="text" placeholder="Nome" className="w-full rounded-lg p-2 bg-violet-200 outline-none text-violet-800 placeholder:text-violet-500" />
-                    <input type="email" placeholder="Email" className="w-full rounded-lg p-2 bg-violet-200 outline-none text-violet-800 placeholder:text-violet-500" />
-                    <input type="password" placeholder="Senha" className="w-full rounded-lg p-2 bg-violet-200 outline-none text-violet-800 placeholder:text-violet-500" />
-                    <input type="password" placeholder="Confirme a senha" className="w-full rounded-lg p-2 bg-violet-200 outline-none text-violet-800 placeholder:text-violet-500" />
+                    <input value={nome} onChange={(e) => setNome(e.target.value)} type="text" placeholder="Nome" className="w-full rounded-lg p-2 bg-violet-200 outline-none text-violet-800 placeholder:text-violet-500" />
+                    <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="Email" className="w-full rounded-lg p-2 bg-violet-200 outline-none text-violet-800 placeholder:text-violet-500" />
+                    <input value={senha} onChange={(e) => setSenha(e.target.value)} type="password" placeholder="Senha" className="w-full rounded-lg p-2 bg-violet-200 outline-none text-violet-800 placeholder:text-violet-500" />
+                    <input value={confirmaSenha} onChange={(e) => setConfirmaSenha(e.target.value)} type="password" placeholder="Confirme a senha" className="w-full rounded-lg p-2 bg-violet-200 outline-none text-violet-800 placeholder:text-violet-500" />
                 </div>
 
-                <button className="w-full rounded-lg p-2 bg-violet-400 text-white font-bold hover:bg-violet-500 transition-colors">Entrar</button>
-            </div>
+                <button type="submit" className="w-full rounded-lg p-2 bg-violet-400 text-white font-bold hover:bg-violet-500 transition-colors">Entrar</button>
+            </form>
 
             {/* cadastro footer */}
             <div className="text-sm text-violet-700">

@@ -21,11 +21,13 @@ export default function Main() {
         <NavegacaoUsuario />
 
         <div className="w-full h-full flex flex-col gap-5">
-          {/* Carteira */}
-          <SaldoCard />
+          <div className="flex flex-row gap-5">
+            {/* Carteira */}
+            <SaldoCard />
 
-          {/* Cartão de Credito */}
-          <CartaoCard />
+            {/* Cartão de Credito */}
+            <CartaoCard />
+          </div>
 
           {/* Transacoes Recebidas */}
           <TransacoesRecebidas />

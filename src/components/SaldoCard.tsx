@@ -2,7 +2,7 @@ import { Wallet } from "lucide-react";
 
 export default function SaldoCard() {
   return (
-    <div className="w-full h-auto bg-violet-50 rounded-2xl shadow-sm p-3 md:p-5">
+    <div className="w-1/2 h-auto bg-violet-50 rounded-2xl shadow-sm p-3 md:p-5">
       <div className="flex flex-col gap-3">
         <div className="flex flex-row items-center gap-2">
           <Wallet className="text-violet-900" />
