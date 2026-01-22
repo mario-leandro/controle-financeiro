@@ -1,5 +1,5 @@
 import "@/styles/globals.css";
-import { criarUsuario } from "@/services/routes_api";
+// import { criarUsuario } from "@/services/routes_api";
 import { useState } from "react";
 
 interface CadastroProps {
@@ -25,7 +25,7 @@ export default function Cadastro({ onToggle }: CadastroProps) {
         }
 
         try {
-            await criarUsuario({ nome, email, senha });
+            // await criarUsuario({ nome, email, senha });
             alert("Usuário criado com sucesso! Agora você pode fazer login.");
             onToggle();
         } catch (err) {
@@ -50,12 +50,12 @@ export default function Cadastro({ onToggle }: CadastroProps) {
                     <input value={confirmaSenha} onChange={(e) => setConfirmaSenha(e.target.value)} type="password" placeholder="Confirme a senha" className="w-full rounded-lg p-2 bg-violet-200 outline-none text-violet-800 placeholder:text-violet-500" />
                 </div>
 
-                <button type="submit" className="w-full rounded-lg p-2 bg-violet-400 text-white font-bold hover:bg-violet-500 transition-colors">Entrar</button>
+                <button type="submit" className="w-full rounded-lg p-2 bg-violet-400 text-white font-bold cursor-pointer hover:bg-violet-500 transition-colors">Entrar</button>
             </form>
 
             {/* cadastro footer */}
             <div className="text-sm text-violet-700">
-                <p>Já tem uma conta? <button onClick={onToggle} className="text-violet-700 font-bold hover:underline">Entrar</button></p>
+                <p>Já tem uma conta? <button onClick={onToggle} className="text-violet-700 font-bold cursor-pointer hover:underline">Entrar</button></p>
             </div>
         </div>
     )

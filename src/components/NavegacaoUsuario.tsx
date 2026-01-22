@@ -1,7 +1,7 @@
 import Image from "next/image";
 import userPhoto from "@/assets/user-photo.jpg";
 import { Cog } from "lucide-react";
-import { obterUsuario } from "@/services/routes_api";
+// import { obterUsuario } from "@/services/routes_api";
 import { useEffect, useState } from "react";
 
 interface Usuario {
@@ -15,9 +15,9 @@ export default function NavegacaoUsuario() {
   
   async function fetchUsuario() {
     try {
-      const data = await obterUsuario();
-      setUsuario(data);
-      console.log("Usuário obtido com sucesso:", data);
+      // const data = await obterUsuario();
+      // setUsuario(data);
+      // console.log("Usuário obtido com sucesso:", data);
     } catch (error) {
       console.error("Erro ao obter usuário:", error);
     }

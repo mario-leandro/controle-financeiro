@@ -1,5 +1,5 @@
 "use client";
-import { loginUsuario } from "@/services/routes_api";
+// import { loginUsuario } from "@/services/routes_api";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -17,7 +17,7 @@ export default function Login({ onToggle }: LoginProps) {
         e.preventDefault();
 
         try {
-            await loginUsuario({ email, senha });
+            // await loginUsuario({ email, senha });
             alert("Login realizado com sucesso!");
             router.push("/Dashboard");
         } catch (err) {
@@ -40,12 +40,12 @@ export default function Login({ onToggle }: LoginProps) {
                     <input value={senha} onChange={(e) => setSenha(e.target.value)} type="password" placeholder="Senha" className="w-full rounded-lg p-2 bg-violet-200 outline-none text-violet-800 placeholder:text-violet-500" />
                 </div>
 
-                <button type="submit" onClick={handleSubmit} className="w-full rounded-lg p-2 bg-violet-400 text-white font-bold hover:bg-violet-500 transition-colors">Entrar</button>
+                <button type="submit" onClick={handleSubmit} className="w-full rounded-lg p-2 bg-violet-400 text-white font-bold cursor-pointer hover:bg-violet-500 transition-colors">Entrar</button>
             </form>
 
             {/* login footer */}
             <div className="text-sm text-violet-700">
-                <p>Não tem uma conta? <button onClick={onToggle} className="text-violet-700 font-bold hover:underline">Registre-se</button></p>
+                <p>Não tem uma conta? <button onClick={onToggle} className="text-violet-700 font-bold cursor-pointer hover:underline">Registre-se</button></p>
             </div>
         </div>
     )
