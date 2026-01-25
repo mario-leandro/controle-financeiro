@@ -21,7 +21,7 @@ export default function Main() {
         <NavegacaoUsuario />
 
         <div className="w-full h-full flex flex-col gap-5">
-          <div className="flex flex-row gap-5">
+          <div className="flex flex-row flex-wrap md:flex-nowrap gap-5">
             {/* Carteira */}
             <SaldoCard />
 
