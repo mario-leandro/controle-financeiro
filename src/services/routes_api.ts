@@ -2,7 +2,7 @@ interface Usuario {
     nome: string,
     email: string,
     senha: string
-} 
+}
 
 async function criarUsuario ({ nome, email, senha }: Usuario) {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/usuarios/login/registrar/registrar.php`, {
