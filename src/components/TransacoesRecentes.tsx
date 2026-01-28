@@ -13,7 +13,7 @@ export default function TransacoesRecebidas() {
       id: 1,
       descricao: "Valor Recebido",
       status: "Recebido",
-      metodo: "Tranferência",
+      metodo: "Transferência",
       quantia: "700",
     },
     {

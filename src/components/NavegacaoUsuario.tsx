@@ -13,6 +13,13 @@ interface Usuario {
 export default function NavegacaoUsuario() {
   const [usuario, setUsuario] = useState<Usuario | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const navArray = [
+    { nome: "Dashboard", link: "/Dashboard" },
+    { nome: "Relatórios", link: "/Relatorios" },
+    { nome: "Transações", link: "/Transacoes" },
+    { nome: "Metas", link: "/Metas" },
+  ];
   
   async function fetchUsuario() {
     try {
@@ -54,29 +61,30 @@ export default function NavegacaoUsuario() {
             : "-left-64 md:left-auto top-0 md:top-auto md:w-80"
         }`}
       >
-        <div className="w-full flex flex-row items-center gap-2">
-          <Image
-            className="w-15 h-15 md:w-20 md:h-20 rounded-full"
-            src={userPhoto}
-            alt={`Foto do usuário ${usuario?.nome}`}
-            width={80}
-            height={80}
-          />
-          <p className="text-base md:text-lg font-semibold text-violet-900">{usuario?.nome}</p>
-        </div>
+        <div className="w-full flex flex-col items-center gap-2">
+          <div className="flex flex-row justify-center items-center gap-3">
+            <Image
+              className="w-15 h-15 md:w-20 md:h-20 rounded-full"
+              src={userPhoto}
+              alt={`Foto do usuário ${usuario?.nome}`}
+              width={80}
+              height={80}
+            />
+            <p className="text-base md:text-lg font-semibold text-violet-900">{usuario?.nome}</p>
+          </div>
 
-        <nav className="w-full flex justify-center items-center">
-          <ul className="flex flex-col gap-6 mt-10">
-            <li className="w-full">
-              <a href="/Dashboard" className="flex flex-row items-center gap-3 text-base text-violet-900 hover:text-violet-700 transition-colors">
-                <span className="text-xl">Dashboard</span>
-              </a>
-              <a href="/Relatórios" className="flex flex-row items-center gap-3 text-base text-violet-900 hover:text-violet-700 transition-colors">
-                <span className="text-xl">Relatórios</span>
-              </a>
-            </li>
-          </ul>
-        </nav>  
+          <nav className="w-full flex justify-center items-center">
+            <ul className="h-full flex flex-col gap-10 mt-10">
+              <li className="w-full">
+                { navArray.map((item) => (
+                <a href={item.link} className="flex flex-row items-center gap-3 text-base text-violet-900 transition-all rounded-lg delay-75 hover:bg-violet-700 hover:text-white hover:p-3" key={item.nome}>
+                  <span className="text-xl font-semibold  ">{item.nome}</span>
+                </a>
+                ))}
+              </li>
+            </ul>
+          </nav>  
+        </div>
 
         <div className="w-full flex justify-center items-center">
           <span className="flex flex-row justify-center items-center gap-1 cursor-pointer">
