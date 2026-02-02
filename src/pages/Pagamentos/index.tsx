@@ -21,7 +21,7 @@ export default function Pagamento() {
             {/* nessa div vai ficar os cards com algumas informações, tipo: quantidade de pagamentos pendentes, quantidades de pagamentos realidados, total pago no mês, etc. */}
             <div className="w-full flex flex-row justify-center items-center gap-5">
               {topics.map((topic) => (
-                <div key={topic.id} className="w-3/12 h-32 flex flex-col justify-between items-start shadow-lg rounded-lg p-5 bg-white mr-5">
+                <div key={topic.id} className="w-3/12 h-32 flex flex-col justify-between items-start shadow-lg rounded-lg p-5 bg-violet-50 mr-5">
                   <p className="text-lg font-semibold text-violet-950">{topic.name}</p>
                   <span className="font-semibold text-violet-950 text-base md:text-lg">{topic.value}</span>
                 </div>
@@ -30,13 +30,13 @@ export default function Pagamento() {
           </div>
 
           {/* Aqui vai ficar um grafico */}
-          <div className="w-full h-64 bg-white shadow-lg rounded-lg p-5">
+          <div className="w-full h-64 bg-violet-50 shadow-lg rounded-lg p-5">
             <h2 className="text-xl font-semibold text-violet-900 mb-5">Gráfico de Pagamentos</h2>
             <p className="text-violet-900">Gráfico ainda não implementado.</p>
           </div>
 
           {/* Aqui vai ficar a tabela ou lista de pagamentos */}
-          <div className="w-full h-full bg-white shadow-lg rounded-lg p-5">
+          <div className="w-full h-full bg-violet-50 shadow-lg rounded-lg p-5">
             <h2 className="text-xl font-semibold text-violet-900 mb-5">Lista de Pagamentos</h2>
             <p className="text-violet-900">Nenhum pagamento registrado ainda.</p>
           </div>
