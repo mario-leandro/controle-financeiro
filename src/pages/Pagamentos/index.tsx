@@ -10,6 +10,16 @@ export default function Pagamento() {
     { id: 4, name: "Valor Ganho no Último Mês", value: "R$ 0,00" },
   ];
 
+  const arrGastosMensais = [
+    { id: 1, descricao: "Celular", value: "R$ 200,00", dayPayment: "21", status: "Em andamento" },
+    { id: 2, descricao: "Plano de Saúde", value: "R$ 261,22", dayPayment: "28", status: "Pendente" },
+  ];
+
+  const arrGastosPessoais = [
+    { id: 1, descricao: "Comprar carro",  value: "R$ 200,00", priority: "Baixa" },
+    { id: 2, descricao: "Fazer uma viagem", value: "R$ 500,00", priority: "Baixa" },
+  ];
+
   return (
     <div className="w-full h-screen flex justify-center items-start">
       <div className="w-full h-full flex flex-row justify-start items-start p-3 md:p-5 gap-5">
@@ -29,16 +39,58 @@ export default function Pagamento() {
             </div>
           </div>
 
+          {/* Aqui vai ficar a tabela ou lista de pagamentos */}
+          <div className="w-full flex flex-col bg-violet-50 shadow-lg rounded-lg p-5">
+            <h2 className="text-xl font-semibold text-violet-900 mb-5">Lista de Pagamentos</h2>
+            
+            <div className="w-full flex flex-row gap-3">
+              <div className="w-1/2 min-h-32 p-2">
+                <p className="text-violet-950 mb-2">Pagamentos Mensais:</p>
+
+                <ul className="flex flex-col gap-2">
+                  {arrGastosMensais.map((gasto) => (
+                    <li key={gasto.id} className="p-2 gap-1 w-full bg-violet-100 rounded-md shadow-sm flex flex-col">
+                      <div className="flex flex-row justify-between items-center">
+                        <p className="text-violet-900">{gasto.descricao}</p>
+                        <span className="text-sm text-violet-600">Valor: {gasto.value}</span>
+                      </div>
+
+                      <div className="flex flex-row justify-between items-center">
+                        <span className="text-sm text-violet-600">Status: {gasto.status}</span>
+                        <span className="text-sm text-violet-600">Dia do Pagamento: {gasto.dayPayment}</span>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              
+              <div className="w-0.5 min-h-32 bg-violet-200"></div>
+
+              <div className="w-1/2 min-h-32 p-2">
+                <p className="text-violet-950 mb-2">Pagamentos Pessoais:</p>
+
+                <ul className="flex flex-col gap-2">
+                  {arrGastosPessoais.map((gasto) => (
+                    <li key={gasto.id} className="p-2 gap-1 w-full bg-violet-100 rounded-md shadow-sm flex flex-col">
+                      <div className="flex flex-row justify-between items-center">
+                        <p className="text-violet-900">{gasto.descricao}</p>
+                        <span className="text-sm text-violet-600">{gasto.priority}</span>
+                      </div>
+
+                      <div className="flex flex-row justify-between items-center">
+                        <span className="text-sm text-violet-600">Status: {gasto.value}</span>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+
           {/* Aqui vai ficar um grafico */}
           <div className="w-full h-64 bg-violet-50 shadow-lg rounded-lg p-5">
             <h2 className="text-xl font-semibold text-violet-900 mb-5">Gráfico de Pagamentos</h2>
             <p className="text-violet-900">Gráfico ainda não implementado.</p>
-          </div>
-
-          {/* Aqui vai ficar a tabela ou lista de pagamentos */}
-          <div className="w-full h-full bg-violet-50 shadow-lg rounded-lg p-5">
-            <h2 className="text-xl font-semibold text-violet-900 mb-5">Lista de Pagamentos</h2>
-            <p className="text-violet-900">Nenhum pagamento registrado ainda.</p>
           </div>
         </div>
       </div>
