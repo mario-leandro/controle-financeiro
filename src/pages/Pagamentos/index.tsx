@@ -29,11 +29,11 @@ export default function Pagamento() {
         <div className="w-full h-full flex flex-col gap-5">
           <div className="flex flex-row flex-wrap md:flex-nowrap gap-5">
             {/* nessa div vai ficar os cards com algumas informações, tipo: quantidade de pagamentos pendentes, quantidades de pagamentos realidados, total pago no mês, etc. */}
-            <div className="w-full flex flex-row justify-center items-center gap-5">
+            <div className="w-full grid grid-cols-2 lg:grid-cols-4 grid-rows-2 lg:grid-rows-1 gap-5">
               {topics.map((topic) => (
-                <div key={topic.id} className="w-3/12 h-32 flex flex-col justify-between items-start shadow-lg rounded-lg p-5 bg-violet-50 mr-5">
-                  <p className="text-lg font-semibold text-violet-950">{topic.name}</p>
-                  <span className="font-semibold text-violet-950 text-base md:text-lg">{topic.value}</span>
+                <div key={topic.id} className="w-full h-32 grid grid-cols-1 grid-rows-2 shadow-lg rounded-lg p-5 bg-violet-50">
+                  <p className="text-lg font-semibold text-violet-900 place-content-start">{topic.name}</p>
+                  <span className="font-semibold text-violet-900 text-base md:text-lg place-content-end">{topic.value}</span>
                 </div>
               ))}
             </div>
@@ -45,14 +45,14 @@ export default function Pagamento() {
             
             <div className="w-full flex flex-row gap-3">
               <div className="w-1/2 min-h-32 p-2">
-                <p className="text-violet-950 mb-2">Pagamentos Mensais:</p>
+                <p className="text-violet-900 mb-2">Pagamentos Mensais:</p>
 
                 <ul className="flex flex-col gap-2">
                   {arrGastosMensais.map((gasto) => (
                     <li key={gasto.id} className="p-2 gap-1 w-full bg-violet-100 rounded-md shadow-sm flex flex-col">
                       <div className="flex flex-row justify-between items-center">
                         <p className="text-violet-900">{gasto.descricao}</p>
-                        <span className="text-sm text-violet-600">Valor: {gasto.value}</span>
+                        <span className="text-sm text-violet-900">Valor: {gasto.value}</span>
                       </div>
 
                       <div className="flex flex-row justify-between items-center">
@@ -64,17 +64,18 @@ export default function Pagamento() {
                 </ul>
               </div>
               
+              {/* linha que divide as duas listas */}
               <div className="w-0.5 min-h-32 bg-violet-200"></div>
 
               <div className="w-1/2 min-h-32 p-2">
-                <p className="text-violet-950 mb-2">Pagamentos Pessoais:</p>
+                <p className="text-violet-900 mb-2">Pagamentos Pessoais:</p>
 
                 <ul className="flex flex-col gap-2">
                   {arrGastosPessoais.map((gasto) => (
                     <li key={gasto.id} className="p-2 gap-1 w-full bg-violet-100 rounded-md shadow-sm flex flex-col">
                       <div className="flex flex-row justify-between items-center">
                         <p className="text-violet-900">{gasto.descricao}</p>
-                        <span className="text-sm text-violet-600">{gasto.priority}</span>
+                        <span className="text-sm text-violet-900">Prioridade: {gasto.priority}</span>
                       </div>
 
                       <div className="flex flex-row justify-between items-center">
@@ -87,11 +88,11 @@ export default function Pagamento() {
             </div>
           </div>
 
-          {/* Aqui vai ficar um grafico */}
-          <div className="w-full h-64 bg-violet-50 shadow-lg rounded-lg p-5">
+          {/* Aqui talvez vai ficar um gráfico */}
+          {/* <div className="w-full h-64 bg-violet-50 shadow-lg rounded-lg p-5">
             <h2 className="text-xl font-semibold text-violet-900 mb-5">Gráfico de Pagamentos</h2>
             <p className="text-violet-900">Gráfico ainda não implementado.</p>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
