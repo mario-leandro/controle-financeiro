@@ -1,51 +1,33 @@
-// interface Usuario {
-//     nome: string,
-//     email: string,
-//     senha: string
-// } 
+import { api } from "./api";
 
-// async function criarUsuario ({ nome, email, senha }: Usuario) {
-//     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/usuarios/criarUsuario.php`, {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify({ nome, email, senha })
-//     });
+interface Usuario {
+  nome: string;
+  email: string;
+  senha: string;
+}
 
-//     if (!response.ok) {
-//         throw new Error('Erro ao criar usuário');
-//     }
+async function criarUsuario({ nome, email, senha }: Usuario) {
+  const response = await api.post("/api/auth/register.php", {
+    nome,
+    email,
+    senha,
+  });
 
-//     return await response.json();
-// }
+  return response.data;
+}
 
-// async function loginUsuario ({ email, senha }: Omit<Usuario, 'nome'>) {
-//     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/usuarios/listarUsuarios.php`, {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify({ email, senha })
-//     });
+async function loginUsuario({ email, senha }: Omit<Usuario, "nome">) {
+  const response = await api.post("/api/auth/login.php", {
+    email,
+    senha,
+  });
 
-//     if (!response.ok) {
-//         throw new Error('Erro ao fazer login');
-//     }
+  return response.data;
+}
 
-//     return await response.json();
-// }
+async function obterUsuario() {
+  const response = await api.get("/api/auth/me.php");
+  return response.data;
+}
 
-// async function obterUsuario () {
-//     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/usuarios/listarUsuarios.php`, {
-//         method: 'GET'
-//     });
-
-//     if (!response.ok) {
-//         throw new Error('Erro ao obter usuário');
-//     }
-
-//     return await response.json();
-// }
-
-// export { criarUsuario, loginUsuario, obterUsuario };
+export { criarUsuario, loginUsuario, obterUsuario };
