@@ -45,10 +45,9 @@ api.interceptors.response.use(
       try {
         const refreshToken = localStorage.getItem("refresh_token");
 
-        const response = await axios.post(
-          `http://localhost/development/controle-financeiro-api/api/refresh/refreshToken.php`,
-          { refresh_token: refreshToken },
-        );
+        const response = await api.post("/api/refresh/refreshToken.php", {
+          refresh_token: refreshToken,
+        });
 
         const { access_token, refresh_token } = response.data;
 

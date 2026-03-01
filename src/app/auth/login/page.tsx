@@ -18,6 +18,7 @@ export default function Login() {
       router.push("/Dashboard");
       alert("Login realizado com sucesso!");
     } catch (err) {
+      console.error(err);
       alert(
         "Erro ao fazer login. Verifique suas credenciais e tente novamente.",
       );
@@ -57,7 +58,6 @@ export default function Login() {
 
         <button
           type="submit"
-          onClick={handleSubmit}
           className="w-full rounded-lg p-2 bg-violet-400 text-white font-bold cursor-pointer hover:bg-violet-500 transition-colors"
         >
           Entrar

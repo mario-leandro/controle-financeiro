@@ -4,6 +4,7 @@ import userPhoto from "@/assets/user-photo.jpg";
 import { Cog, Menu, X } from "lucide-react";
 // import { obterUsuario } from "@/services/routes_api";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 interface Usuario {
   nome: string;
@@ -22,7 +23,7 @@ export default function NavegacaoUsuario() {
     { nome: "Metas", link: "/Metas" },
     { nome: "Pagamentos", link: "/Pagamentos" },
   ];
-  
+
   async function fetchUsuario() {
     try {
       // const data = await obterUsuario();
@@ -72,20 +73,25 @@ export default function NavegacaoUsuario() {
               width={80}
               height={80}
             />
-            <p className="text-base md:text-lg font-semibold text-violet-900">{usuario?.nome ?? "Mario Marques"}</p>
+            <p className="text-base md:text-lg font-semibold text-violet-900">
+              {usuario?.nome ?? "Mario Marques"}
+            </p>
           </div>
 
           <nav className="w-full flex justify-center items-center">
             <ul className="w-full flex flex-col mt-10 gap-5">
-              { navArray.map((item) => (
-              <li className="w-full" key={item.nome}>
-                <a href={item.link} className="flex flex-row items-center gap-3 text-base text-violet-900 transition-all rounded-lg delay-75 shadow-sm p-3 hover:bg-violet-700 hover:text-white hover:p-3" >
-                  <span className="text-xl font-semibold  ">{item.nome}</span>
-                </a>
-              </li>
+              {navArray.map((item) => (
+                <li className="w-full" key={item.nome}>
+                  <Link
+                    href={item.link}
+                    className="flex flex-row items-center gap-3 text-base text-violet-900 transition-all rounded-lg delay-75 shadow-sm p-3 hover:bg-violet-700 hover:text-white hover:p-3"
+                  >
+                    <span className="text-xl font-semibold  ">{item.nome}</span>
+                  </Link>
+                </li>
               ))}
             </ul>
-          </nav>  
+          </nav>
         </div>
 
         <div className="w-full flex justify-center items-center">

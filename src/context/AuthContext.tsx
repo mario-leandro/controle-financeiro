@@ -25,14 +25,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   const login = async (email: string, senha: string) => {
-    const response = await loginUsuario({ email, senha });
+    try {
+      const data = await loginUsuario({ email, senha });
 
-    const { access_token, refresh_token, usuario } = response;
+      console.log("DATA:", data);
 
-    localStorage.setItem("refresh_token", refresh_token);
-    api.defaults.headers.Authorization = `Bearer ${access_token}`;
+      const { access_token, refresh_token, usuario } = data;
 
-    setUsuario(usuario);
+      localStorage.setItem("refresh_token", refresh_token);
+
+      console.log("SALVO:", localStorage.getItem("refresh_token"));
+
+      api.defaults.headers.Authorization = `Bearer ${access_token}`;
+
+      setUsuario(usuario);
+    } catch (error) {
+      console.error("Erro no login:", error);
+      throw error;
+    }
   };
 
   const logout = async () => {
@@ -50,53 +60,40 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const register = async (nome: string, email: string, senha: string) => {
-    try {
-      await criarUsuario({ nome, email, senha });
-      await login(email, senha);
-    } catch (error: any) {
-      console.error("Erro completo:", error);
-
-      if (error.response) {
-        console.error("Status:", error.response.status);
-        console.error("Resposta da API:", error.response.data);
-      }
-
-      throw error;
-    }
+    await criarUsuario({ nome, email, senha });
+    await login(email, senha);
   };
 
-  useEffect(() => {
-    async function loadUser() {
-      const refreshToken = localStorage.getItem("refresh_token");
+  async function loadUser() {
+    const refreshToken = localStorage.getItem("refresh_token");
+    console.log("REFRESH TOKEN:", refreshToken);
 
-      if (!refreshToken) {
-        setLoading(false);
-        return;
-      }
-
-      try {
-        const refreshResponse = await api.post(
-          "/api/refresh/refreshToken.php",
-          {
-            refresh_token: refreshToken,
-          },
-        );
-
-        const { access_token, refresh_token } = refreshResponse.data;
-
-        localStorage.setItem("refresh_token", refresh_token);
-        api.defaults.headers.Authorization = `Bearer ${access_token}`;
-
-        const me = await api.get("/api/auth/me.php");
-        setUsuario(me.data.usuario);
-      } catch {
-        localStorage.removeItem("refresh_token");
-        setUsuario(null);
-      } finally {
-        setLoading(false);
-      }
+    if (!refreshToken) {
+      setLoading(false);
+      return;
     }
 
+    try {
+      const refreshResponse = await api.post("/api/refresh/refreshToken.php", {
+        refresh_token: refreshToken,
+      });
+
+      const { access_token, refresh_token } = refreshResponse.data;
+
+      localStorage.setItem("refresh_token", refresh_token);
+      api.defaults.headers.Authorization = `Bearer ${access_token}`;
+
+      const me = await api.get("/api/auth/me.php");
+      setUsuario(me.data.usuario);
+    } catch {
+      localStorage.removeItem("refresh_token");
+      setUsuario(null);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
     loadUser();
   }, []);
 

@@ -24,9 +24,10 @@ export default function Cadastro() {
 
     try {
       await register(nome, email, senha);
-      router.push("/dashboard");
+      router.push("/Dashboard");
     } catch (err) {
-      alert("Erro ao criar usuário: " + err);
+      console.error(err);
+      alert("Erro ao criar conta. Verifique os dados e tente novamente.");
     }
   };
 
@@ -77,6 +78,7 @@ export default function Cadastro() {
 
         <button
           type="submit"
+          onClick={handleSubmit}
           className="w-full rounded-lg p-2 bg-violet-400 text-white font-bold cursor-pointer hover:bg-violet-500 transition-colors"
         >
           Cadastrar

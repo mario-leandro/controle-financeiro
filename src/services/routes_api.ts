@@ -17,12 +17,22 @@ async function criarUsuario({ nome, email, senha }: Usuario) {
 }
 
 async function loginUsuario({ email, senha }: Omit<Usuario, "nome">) {
-  const response = await api.post("/api/auth/login.php", {
-    email,
-    senha,
-  });
+  try {
+    const response = await api.post("/api/auth/login.php", {
+      email,
+      senha,
+    });
 
-  return response.data;
+    return response.data;
+  } catch (error: any) {
+    console.error("Erro na requisição de login:", error);
+    if (error.response) {
+      console.error("Resposta do servidor:", error.response.data);
+      throw new Error(error.response.data.message || "Erro no login");
+    } else {
+      throw new Error("Erro de rede ou servidor indisponível");
+    }
+  }
 }
 
 async function obterUsuario() {
