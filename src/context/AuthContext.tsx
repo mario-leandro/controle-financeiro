@@ -28,13 +28,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const data = await loginUsuario({ email, senha });
 
-      console.log("DATA:", data);
+      // console.log("DATA:", data);
 
       const { access_token, refresh_token, usuario } = data;
 
       localStorage.setItem("refresh_token", refresh_token);
 
-      console.log("SALVO:", localStorage.getItem("refresh_token"));
+      // console.log("SALVO:", localStorage.getItem("refresh_token"));
 
       api.defaults.headers.Authorization = `Bearer ${access_token}`;
 
@@ -66,7 +66,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   async function loadUser() {
     const refreshToken = localStorage.getItem("refresh_token");
-    console.log("REFRESH TOKEN:", refreshToken);
+    // console.log("REFRESH TOKEN:", refreshToken);
 
     if (!refreshToken) {
       setLoading(false);

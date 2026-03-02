@@ -1,10 +1,10 @@
 "use client";
 import Image from "next/image";
 import userPhoto from "@/assets/user-photo.jpg";
-import { Cog, Menu, X } from "lucide-react";
-// import { obterUsuario } from "@/services/routes_api";
+import { CircleUserRound, Cog, Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { obterUsuario } from "@/services/routes_api";
 
 interface Usuario {
   nome: string;
@@ -26,9 +26,9 @@ export default function NavegacaoUsuario() {
 
   async function fetchUsuario() {
     try {
-      // const data = await obterUsuario();
-      // setUsuario(data);
-      // console.log("Usuário obtido com sucesso:", data);
+      const data = await obterUsuario();
+      setUsuario(data);
+      console.log("Usuário obtido com sucesso");
     } catch (error) {
       console.error("Erro ao obter usuário:", error);
     }
@@ -66,15 +66,19 @@ export default function NavegacaoUsuario() {
       >
         <div className="w-full flex flex-col items-center gap-2">
           <div className="flex flex-row justify-center items-center gap-3">
-            <Image
-              className="w-15 h-15 md:w-20 md:h-20 rounded-full"
-              src={userPhoto}
-              alt={`Foto do usuário ${usuario?.nome ?? "Mario Marques"}`}
-              width={80}
-              height={80}
-            />
+            {usuario?.usuario.foto_usuario ? (
+              <Image
+                className="w-15 h-15 md:w-20 md:h-20 rounded-full"
+                src={usuario?.usuario.foto_usuario}
+                alt={`Foto do usuário ${usuario?.usuario.nome}`}
+                width={80}
+                height={80}
+              />
+            ) : (
+              <CircleUserRound className="w-15 h-15 md:w-20 md:h-20 text-violet-900" />
+            )}
             <p className="text-base md:text-lg font-semibold text-violet-900">
-              {usuario?.nome ?? "Mario Marques"}
+              {usuario?.usuario.nome}
             </p>
           </div>
 
