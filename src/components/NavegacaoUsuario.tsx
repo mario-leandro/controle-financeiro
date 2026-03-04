@@ -1,10 +1,19 @@
 "use client";
 import Image from "next/image";
-import userPhoto from "@/assets/user-photo.jpg";
-import { CircleUserRound, Cog, Menu, X } from "lucide-react";
+// import userPhoto from "@/assets/user-photo.jpg";
+import { CircleUserRound, Cog, Menu, Trash, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { obterUsuario } from "@/services/routes_api";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface Usuario {
   nome: string;
@@ -100,10 +109,33 @@ export default function NavegacaoUsuario() {
 
         <div className="w-full flex justify-center items-center">
           <span className="flex flex-row justify-center items-center gap-1 cursor-pointer">
-            <Cog className="text-violet-900" />
-            <p className="text-lg font-semibold text-violet-900 hidden md:block">
-              Configurações
-            </p>
+            <DropdownMenu>
+              <DropdownMenuTrigger className="flex flex-row justify-center items-center gap-1">
+                <Cog className="text-violet-900" />
+                <p className="text-lg font-semibold text-violet-900 hidden md:block">
+                  Configurações
+                </p>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="bg-violet-50 border-violet-200">
+                <DropdownMenuGroup>
+                  <DropdownMenuLabel>Minha Conta</DropdownMenuLabel>
+                  <DropdownMenuItem>Perfil</DropdownMenuItem>
+                  <DropdownMenuItem>Faturamento</DropdownMenuItem>
+                </DropdownMenuGroup>
+                <DropdownMenuGroup>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>Equipe</DropdownMenuItem>
+                  <DropdownMenuItem>Assinatura</DropdownMenuItem>
+                </DropdownMenuGroup>
+                <DropdownMenuGroup>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem className="text-red-700 flex flex-row justify-between items-center gap-2">
+                    Sair
+                    <Trash className="ml-2 text-red-700" />
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </span>
         </div>
       </div>
