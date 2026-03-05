@@ -2,6 +2,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
+import AlertaErr, { AlertaSucesso } from "@/components/Alerta";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -16,12 +17,13 @@ export default function Login() {
     try {
       await login(email, senha);
       router.push("/Dashboard");
-      alert("Login realizado com sucesso!");
+      <AlertaSucesso message="Login bem-sucedido!" onClose={() => {}} />;
     } catch (err) {
       console.error(err);
-      alert(
-        "Erro ao fazer login. Verifique suas credenciais e tente novamente.",
-      );
+      <AlertaErr
+        message="Erro ao fazer login. Verifique suas credenciais e tente novamente."
+        onClose={() => {}}
+      />;
     }
   };
 

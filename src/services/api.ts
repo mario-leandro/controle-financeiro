@@ -1,7 +1,13 @@
 import axios from "axios";
 
+const arrUrls = [
+  "http://localhost/development/controle-financeiro-api",
+  "http://projects.local/controle-financeiro-api",
+  "http://localhost/controle-financeiro-api",
+];
+
 export const api = axios.create({
-  baseURL: "http://localhost/development/controle-financeiro-api",
+  baseURL: arrUrls[1],
   headers: {
     "Content-Type": "application/json",
   },

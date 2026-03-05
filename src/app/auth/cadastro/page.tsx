@@ -3,6 +3,7 @@ import "@/styles/globals.css";
 import { useAuth } from "@/context/AuthContext";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import AlertaErr, { AlertaSucesso } from "@/components/Alerta";
 
 export default function Cadastro() {
   const router = useRouter();
@@ -12,22 +13,28 @@ export default function Cadastro() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [confirmaSenha, setConfirmaSenha] = useState("");
-  const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (senha !== confirmaSenha) {
-      alert("Senhas não coincidem");
+      <AlertaErr
+        message="As senhas não coincidem. Por favor, tente novamente."
+        onClose={() => {}}
+      />;
       return;
     }
 
     try {
       await register(nome, email, senha);
       router.push("/Dashboard");
+      <AlertaSucesso message="Conta criada com sucesso!" onClose={() => {}} />;
     } catch (err) {
       console.error(err);
-      alert("Erro ao criar conta. Verifique os dados e tente novamente.");
+      <AlertaErr
+        message="Erro ao criar conta. Verifique os dados e tente novamente."
+        onClose={() => {}}
+      />;
     }
   };
 
