@@ -12,6 +12,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Relatorios() {
   const [mostrarTabela, setMostrarTabela] = useState(false);
@@ -20,6 +22,21 @@ export default function Relatorios() {
   const [dataInicio, setDataInicio] = useState("");
   const [dataFinal, setDataFinal] = useState("");
   const [buscarRelatorio, setBuscarRelatorio] = useState(false);
+  const { user, loading } = useAuth();
+  const router = useRouter();
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p>Carregando...</p>
+      </div>
+    );
+  }
+
+  if (!user) {
+    router.push("/auth/login");
+    return null;
+  }
 
   const toggleTabela = () => {
     setMostrarTabela((prev) => !prev);

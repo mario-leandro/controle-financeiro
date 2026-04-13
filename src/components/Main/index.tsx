@@ -5,14 +5,34 @@ import BotaoFlutuante from "@/components/BotaoFlutuante";
 import TransacoesRecebidas from "@/components/TransacoesRecentes";
 import NavegacaoUsuario from "@/components/NavegacaoUsuario";
 import Modal from "@/components/modal";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Main() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { user, loading } = useAuth();
+  const router = useRouter();
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
+  };
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push("/auth/login");
+    }
+  }, [loading, user, router]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p>Carregando...</p>
+      </div>
+    );
   }
+
+  if (!user) return null;
 
   return (
     <div className="w-full h-screen flex justify-center items-start">

@@ -10,7 +10,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Controle Financeiro",
+  title: "Wallet Motion",
   description: "Aplicação para controle financeiro pessoal.",
   keywords: ["finanças", "controle financeiro", "pessoal"],
   authors: [
