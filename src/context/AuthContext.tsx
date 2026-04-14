@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 
 type AuthContextType = {
   user: User | null;
+  profile: Profile | null;
   session: Session | null;
   loading: boolean;
   signIn: (email: string, senha: string) => Promise<void>;
@@ -13,11 +14,18 @@ type AuthContextType = {
   signOut: () => Promise<void>;
 };
 
+interface Profile {
+  id: string;
+  nome: string | null;
+  created_at: string;
+}
+
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const supabase = useMemo(() => createClient(), []);
   const [user, setUser] = useState<User | null>(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -38,6 +46,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       setSession(session);
       setUser(session?.user ?? null);
+
+      if (session?.user) {
+        await fetchProfile(session.user.id);
+      } else {
+        setProfile(null);
+      }
+
       setLoading(false);
     }
 
@@ -45,9 +60,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    } = supabase.auth.onAuthStateChange(async (_event, session) => {
       setSession(session);
       setUser(session?.user ?? null);
+
+      if (session?.user) {
+        await fetchProfile(session.user.id);
+      } else {
+        setProfile(null);
+      }
+
       setLoading(false);
     });
 
@@ -56,6 +78,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       subscription.unsubscribe();
     };
   }, [supabase]);
+
+  async function fetchProfile(userId: string) {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("id", userId)
+      .single();
+
+    if (error) {
+      console.error("Erro ao buscar profile:", error.message);
+      setProfile(null);
+      return;
+    }
+
+    setProfile(data);
+  }
 
   async function signIn(email: string, senha: string) {
     const { error } = await supabase.auth.signInWithPassword({
@@ -90,11 +128,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (error) {
       throw new Error(error.message);
     }
+
+    setProfile(null);
   }
 
   return (
     <AuthContext.Provider
-      value={{ user, session, loading, signIn, signUp, signOut }}
+      value={{ user, profile, session, loading, signIn, signUp, signOut }}
     >
       {children}
     </AuthContext.Provider>

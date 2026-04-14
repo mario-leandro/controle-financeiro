@@ -17,13 +17,11 @@ import { useAuth } from "@/context/AuthContext";
 
 export default function NavegacaoUsuario() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { user, signOut } = useAuth();
+  const { user, profile, signOut } = useAuth();
   const router = useRouter();
 
-  const nome =
-    user?.user_metadata?.nome || user?.email?.split("@")[0] || "Usuário";
-  // const email = user?.email || "";
-  const foto_usuario = user?.user_metadata?.foto_usuario || "";
+  const nome = profile?.nome || user?.email?.split("@")[0] || "Usuário";
+  const email = user?.email || "";
 
   const navArray = [
     { nome: "Dashboard", link: "/Dashboard" },
