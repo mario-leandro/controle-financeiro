@@ -18,7 +18,7 @@ export default function LoginPage() {
 
     try {
       await signIn(email, senha);
-      router.push("/dashboard");
+      router.push("/Dashboard");
     } catch (error) {
       const message =
         error instanceof Error ? error.message : "Erro ao fazer login";

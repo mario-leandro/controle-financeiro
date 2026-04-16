@@ -21,6 +21,7 @@ export default function NavegacaoUsuario() {
   const router = useRouter();
 
   const nome = profile?.nome || user?.email?.split("@")[0] || "Usuário";
+  const fotoUsuario = profile?.avatar_url || "/default-user.png";
   const email = user?.email || "";
 
   const navArray = [
@@ -64,10 +65,10 @@ export default function NavegacaoUsuario() {
       >
         <div className="w-full flex flex-col items-center gap-2">
           <div className="flex flex-row justify-center items-center gap-3">
-            {foto_usuario ? (
+            {fotoUsuario ? (
               <Image
                 className="w-15 h-15 md:w-20 md:h-20 rounded-full"
-                src={foto_usuario}
+                src={fotoUsuario}
                 alt={`Foto do usuário ${nome}`}
                 width={80}
                 height={80}

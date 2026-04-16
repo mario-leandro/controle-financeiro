@@ -17,6 +17,7 @@ type AuthContextType = {
 interface Profile {
   id: string;
   nome: string | null;
+  avatar_url: string | null;
   created_at: string;
 }
 
