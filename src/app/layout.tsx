@@ -10,8 +10,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Controle Financeiro",
-  description: "Aplicação para controle financeiro pessoal.",
+  title: "Wallet Motion",
+  description: "Suas finanças, sempre em movimento.",
   keywords: ["finanças", "controle financeiro", "pessoal"],
   authors: [
     { name: "Mario Marques", url: "https://mario-leandro.github.io/DevMario/" },
