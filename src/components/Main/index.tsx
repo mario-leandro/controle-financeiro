@@ -5,14 +5,69 @@ import BotaoFlutuante from "@/components/BotaoFlutuante";
 import TransacoesRecebidas from "@/components/TransacoesRecentes";
 import NavegacaoUsuario from "@/components/NavegacaoUsuario";
 import Modal from "@/components/modal";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
+import { getAccounts, getRecentTransactions } from "@/services/dashboard";
+import type { Account, Transaction } from "@/types/financeiro";
 
 export default function Main() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [accounts, setAccounts] = useState<Account[]>([]);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [dashboardLoading, setDashboardLoading] = useState(true);
+
+  const { user, loading } = useAuth();
+  const router = useRouter();
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
+  };
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push("/auth/login");
+    }
+  }, [loading, user, router]);
+
+  useEffect(() => {
+    async function loadDashboardData() {
+      if (!user) return;
+
+      try {
+        setDashboardLoading(true);
+
+        const [accountsData, transactionsData] = await Promise.all([
+          getAccounts(),
+          getRecentTransactions(),
+        ]);
+
+        setAccounts(accountsData);
+        setTransactions(transactionsData);
+      } catch (error) {
+        console.error("Erro ao carregar dashboard:", error);
+      } finally {
+        setDashboardLoading(false);
+      }
+    }
+
+    loadDashboardData();
+  }, [user]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p>Carregando...</p>
+      </div>
+    );
   }
+
+  if (!user) return null;
+
+  const saldoTotal = accounts.reduce(
+    (total, conta) => total + Number(conta.saldo_inicial),
+    0,
+  );
 
   return (
     <div className="w-full h-screen flex justify-center items-start">
@@ -23,14 +78,14 @@ export default function Main() {
         <div className="w-full h-full flex flex-col gap-5">
           <div className="flex flex-row flex-wrap md:flex-nowrap gap-5">
             {/* Carteira */}
-            <SaldoCard />
+            <SaldoCard saldo={saldoTotal} />
 
             {/* Cartão de Credito */}
-            <CartaoCard />
+            <CartaoCard accounts={accounts} />
           </div>
 
           {/* Transacoes Recebidas */}
-          <TransacoesRecebidas />
+          <TransacoesRecebidas transactions={transactions} />
 
           {/* Botão para adicionar receita/despesa */}
           <BotaoFlutuante onClick={toggleModal} />

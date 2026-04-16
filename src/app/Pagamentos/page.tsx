@@ -1,8 +1,26 @@
 "use client";
 import NavegacaoUsuario from "@/components/NavegacaoUsuario";
 import "@/styles/globals.css";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Pagamento() {
+  const { user, loading } = useAuth();
+  const router = useRouter();
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p>Carregando...</p>
+      </div>
+    );
+  }
+
+  if (!user) {
+    router.push("/auth/login");
+    return null;
+  }
+
   const topics = [
     { id: 1, name: "Pagamentos Pendentes", value: 0 },
     { id: 2, name: "Pagamentos Realizados", value: 0 },
@@ -11,13 +29,35 @@ export default function Pagamento() {
   ];
 
   const arrGastosMensais = [
-    { id: 1, descricao: "Celular", value: "R$ 200,00", dayPayment: "21", status: "Em andamento" },
-    { id: 2, descricao: "Plano de Saúde", value: "R$ 261,22", dayPayment: "28", status: "Pendente" },
+    {
+      id: 1,
+      descricao: "Celular",
+      value: "R$ 200,00",
+      dayPayment: "21",
+      status: "Em andamento",
+    },
+    {
+      id: 2,
+      descricao: "Plano de Saúde",
+      value: "R$ 261,22",
+      dayPayment: "28",
+      status: "Pendente",
+    },
   ];
 
   const arrGastosPessoais = [
-    { id: 1, descricao: "Comprar carro",  value: "R$ 200,00", priority: "Baixa" },
-    { id: 2, descricao: "Fazer uma viagem", value: "R$ 500,00", priority: "Baixa" },
+    {
+      id: 1,
+      descricao: "Comprar carro",
+      value: "R$ 200,00",
+      priority: "Baixa",
+    },
+    {
+      id: 2,
+      descricao: "Fazer uma viagem",
+      value: "R$ 500,00",
+      priority: "Baixa",
+    },
   ];
 
   return (
@@ -31,9 +71,16 @@ export default function Pagamento() {
             {/* nessa div vai ficar os cards com algumas informações, tipo: quantidade de pagamentos pendentes, quantidades de pagamentos realidados, total pago no mês, etc. */}
             <div className="w-full grid grid-cols-2 lg:grid-cols-4 grid-rows-2 lg:grid-rows-1 gap-5">
               {topics.map((topic) => (
-                <div key={topic.id} className="w-full h-32 grid grid-cols-1 grid-rows-2 shadow-lg rounded-lg p-5 bg-violet-50">
-                  <p className="text-lg font-semibold text-violet-900 place-content-start">{topic.name}</p>
-                  <span className="font-semibold text-violet-900 text-base md:text-lg place-content-end">{topic.value}</span>
+                <div
+                  key={topic.id}
+                  className="w-full h-32 grid grid-cols-1 grid-rows-2 shadow-lg rounded-lg p-5 bg-violet-50"
+                >
+                  <p className="text-lg font-semibold text-violet-900 place-content-start">
+                    {topic.name}
+                  </p>
+                  <span className="font-semibold text-violet-900 text-base md:text-lg place-content-end">
+                    {topic.value}
+                  </span>
                 </div>
               ))}
             </div>
@@ -41,29 +88,40 @@ export default function Pagamento() {
 
           {/* Aqui vai ficar a tabela ou lista de pagamentos */}
           <div className="w-full flex flex-col bg-violet-50 shadow-lg rounded-lg p-5">
-            <h2 className="text-xl font-semibold text-violet-900 mb-5">Lista de Pagamentos</h2>
-            
+            <h2 className="text-xl font-semibold text-violet-900 mb-5">
+              Lista de Pagamentos
+            </h2>
+
             <div className="w-full flex flex-row gap-3">
               <div className="w-1/2 min-h-32 p-2">
                 <p className="text-violet-900 mb-2">Pagamentos Mensais:</p>
 
                 <ul className="flex flex-col gap-2">
                   {arrGastosMensais.map((gasto) => (
-                    <li key={gasto.id} className="p-2 gap-1 w-full bg-violet-100 rounded-md shadow-sm flex flex-col">
+                    <li
+                      key={gasto.id}
+                      className="p-2 gap-1 w-full bg-violet-100 rounded-md shadow-sm flex flex-col"
+                    >
                       <div className="flex flex-row justify-between items-center">
                         <p className="text-violet-900">{gasto.descricao}</p>
-                        <span className="text-sm text-violet-900">Valor: {gasto.value}</span>
+                        <span className="text-sm text-violet-900">
+                          Valor: {gasto.value}
+                        </span>
                       </div>
 
                       <div className="flex flex-row justify-between items-center">
-                        <span className="text-sm text-violet-600">Status: {gasto.status}</span>
-                        <span className="text-sm text-violet-600">Dia do Pagamento: {gasto.dayPayment}</span>
+                        <span className="text-sm text-violet-600">
+                          Status: {gasto.status}
+                        </span>
+                        <span className="text-sm text-violet-600">
+                          Dia do Pagamento: {gasto.dayPayment}
+                        </span>
                       </div>
                     </li>
                   ))}
                 </ul>
               </div>
-              
+
               {/* linha que divide as duas listas */}
               <div className="w-0.5 min-h-32 bg-violet-200"></div>
 
@@ -72,14 +130,21 @@ export default function Pagamento() {
 
                 <ul className="flex flex-col gap-2">
                   {arrGastosPessoais.map((gasto) => (
-                    <li key={gasto.id} className="p-2 gap-1 w-full bg-violet-100 rounded-md shadow-sm flex flex-col">
+                    <li
+                      key={gasto.id}
+                      className="p-2 gap-1 w-full bg-violet-100 rounded-md shadow-sm flex flex-col"
+                    >
                       <div className="flex flex-row justify-between items-center">
                         <p className="text-violet-900">{gasto.descricao}</p>
-                        <span className="text-sm text-violet-900">Prioridade: {gasto.priority}</span>
+                        <span className="text-sm text-violet-900">
+                          Prioridade: {gasto.priority}
+                        </span>
                       </div>
 
                       <div className="flex flex-row justify-between items-center">
-                        <span className="text-sm text-violet-600">Status: {gasto.value}</span>
+                        <span className="text-sm text-violet-600">
+                          Status: {gasto.value}
+                        </span>
                       </div>
                     </li>
                   ))}

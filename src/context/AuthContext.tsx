@@ -1,114 +1,152 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
-import { api } from "@/services/api";
-import { loginUsuario, criarUsuario } from "@/services/routes_api";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import type { User, Session } from "@supabase/supabase-js";
+import { createClient } from "@/lib/supabase/client";
 
-interface Usuario {
-  id: number;
-  nome: string;
-  email: string;
-}
-
-interface AuthContextType {
-  usuario: Usuario | null;
+type AuthContextType = {
+  user: User | null;
+  profile: Profile | null;
+  session: Session | null;
   loading: boolean;
-  login: (email: string, senha: string) => Promise<void>;
-  register: (nome: string, email: string, senha: string) => Promise<void>;
-  logout: () => Promise<void>;
+  signIn: (email: string, senha: string) => Promise<void>;
+  signUp: (nome: string, email: string, senha: string) => Promise<void>;
+  signOut: () => Promise<void>;
+};
+
+interface Profile {
+  id: string;
+  nome: string | null;
+  created_at: string;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [usuario, setUsuario] = useState<Usuario | null>(null);
+  const supabase = useMemo(() => createClient(), []);
+  const [user, setUser] = useState<User | null>(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const login = async (email: string, senha: string) => {
-    try {
-      const data = await loginUsuario({ email, senha });
+  useEffect(() => {
+    let mounted = true;
 
-      // console.log("DATA:", data);
+    async function loadSession() {
+      const {
+        data: { session },
+        error,
+      } = await supabase.auth.getSession();
 
-      const { access_token, refresh_token, usuario } = data;
+      if (error) {
+        console.error("Erro ao obter sessão:", error.message);
+      }
 
-      localStorage.setItem("refresh_token", refresh_token);
+      if (!mounted) return;
 
-      // console.log("SALVO:", localStorage.getItem("refresh_token"));
+      setSession(session);
+      setUser(session?.user ?? null);
 
-      api.defaults.headers.Authorization = `Bearer ${access_token}`;
+      if (session?.user) {
+        await fetchProfile(session.user.id);
+      } else {
+        setProfile(null);
+      }
 
-      setUsuario(usuario);
-    } catch (error) {
-      console.error("Erro no login:", error);
-      throw error;
-    }
-  };
-
-  const logout = async () => {
-    const refreshToken = localStorage.getItem("refresh_token");
-
-    if (refreshToken) {
-      await api.post("/api/auth/logout.php", {
-        refresh_token: refreshToken,
-      });
-    }
-
-    localStorage.removeItem("refresh_token");
-    delete api.defaults.headers.Authorization;
-    setUsuario(null);
-  };
-
-  const register = async (nome: string, email: string, senha: string) => {
-    await criarUsuario({ nome, email, senha });
-    await login(email, senha);
-  };
-
-  async function loadUser() {
-    const refreshToken = localStorage.getItem("refresh_token");
-    // console.log("REFRESH TOKEN:", refreshToken);
-
-    if (!refreshToken) {
       setLoading(false);
+    }
+
+    loadSession();
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+
+      if (session?.user) {
+        await fetchProfile(session.user.id);
+      } else {
+        setProfile(null);
+      }
+
+      setLoading(false);
+    });
+
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
+  }, [supabase]);
+
+  async function fetchProfile(userId: string) {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("id", userId)
+      .single();
+
+    if (error) {
+      console.error("Erro ao buscar profile:", error.message);
+      setProfile(null);
       return;
     }
 
-    try {
-      const refreshResponse = await api.post("/api/refresh/refreshToken.php", {
-        refresh_token: refreshToken,
-      });
+    setProfile(data);
+  }
 
-      const { access_token, refresh_token } = refreshResponse.data;
+  async function signIn(email: string, senha: string) {
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password: senha,
+    });
 
-      localStorage.setItem("refresh_token", refresh_token);
-      api.defaults.headers.Authorization = `Bearer ${access_token}`;
-
-      const me = await api.get("/api/auth/me.php");
-      setUsuario(me.data.usuario);
-    } catch {
-      localStorage.removeItem("refresh_token");
-      setUsuario(null);
-    } finally {
-      setLoading(false);
+    if (error) {
+      throw new Error(error.message);
     }
   }
 
-  useEffect(() => {
-    loadUser();
-  }, []);
+  async function signUp(nome: string, email: string, senha: string) {
+    const { error } = await supabase.auth.signUp({
+      email,
+      password: senha,
+      options: {
+        data: {
+          nome,
+        },
+      },
+    });
+
+    if (error) {
+      throw new Error(error.message);
+    }
+  }
+
+  async function signOut() {
+    const { error } = await supabase.auth.signOut();
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    setProfile(null);
+  }
 
   return (
-    <AuthContext.Provider value={{ usuario, loading, login, logout, register }}>
+    <AuthContext.Provider
+      value={{ user, profile, session, loading, signIn, signUp, signOut }}
+    >
       {children}
     </AuthContext.Provider>
   );
 }
 
-// 👇 FORA DO PROVIDER
 export function useAuth() {
   const context = useContext(AuthContext);
+
   if (!context) {
     throw new Error("useAuth deve ser usado dentro de AuthProvider");
   }
+
   return context;
 }

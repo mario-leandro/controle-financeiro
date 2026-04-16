@@ -1,7 +1,26 @@
+"use client";
 import "@/styles/globals.css";
 import NavegacaoUsuario from "@/components/NavegacaoUsuario";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Metas() {
+  const { user, loading } = useAuth();
+  const router = useRouter();
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p>Carregando...</p>
+      </div>
+    );
+  }
+
+  if (!user) {
+    router.push("/auth/login");
+    return null;
+  }
+
   return (
     <div className="w-full h-screen flex justify-center items-start">
       <div className="w-full h-full flex flex-row justify-start items-start p-3 md:p-5 gap-5">

@@ -1,10 +1,8 @@
 "use client";
 import Image from "next/image";
-// import userPhoto from "@/assets/user-photo.jpg";
 import { CircleUserRound, Cog, Menu, Trash, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import { obterUsuario } from "@/services/routes_api";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,16 +12,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
-interface Usuario {
-  nome: string;
-  email: string;
-  foto_usuario?: string;
-}
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 
 export default function NavegacaoUsuario() {
-  const [usuario, setUsuario] = useState<Usuario | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, profile, signOut } = useAuth();
+  const router = useRouter();
+
+  const nome = profile?.nome || user?.email?.split("@")[0] || "Usuário";
+  const email = user?.email || "";
 
   const navArray = [
     { nome: "Dashboard", link: "/Dashboard" },
@@ -33,19 +31,10 @@ export default function NavegacaoUsuario() {
     { nome: "Pagamentos", link: "/Pagamentos" },
   ];
 
-  async function fetchUsuario() {
-    try {
-      const data = await obterUsuario();
-      setUsuario(data);
-      console.log("Usuário obtido com sucesso");
-    } catch (error) {
-      console.error("Erro ao obter usuário:", error);
-    }
+  async function handleLogout() {
+    await signOut();
+    router.push("/auth/login");
   }
-
-  useEffect(() => {
-    fetchUsuario();
-  }, []);
 
   return (
     <>
@@ -75,11 +64,11 @@ export default function NavegacaoUsuario() {
       >
         <div className="w-full flex flex-col items-center gap-2">
           <div className="flex flex-row justify-center items-center gap-3">
-            {usuario?.usuario.foto_usuario ? (
+            {foto_usuario ? (
               <Image
                 className="w-15 h-15 md:w-20 md:h-20 rounded-full"
-                src={usuario?.usuario.foto_usuario}
-                alt={`Foto do usuário ${usuario?.usuario.nome}`}
+                src={foto_usuario}
+                alt={`Foto do usuário ${nome}`}
                 width={80}
                 height={80}
               />
@@ -87,7 +76,7 @@ export default function NavegacaoUsuario() {
               <CircleUserRound className="w-15 h-15 md:w-20 md:h-20 text-violet-900" />
             )}
             <p className="text-base md:text-lg font-semibold text-violet-900">
-              {usuario?.usuario.nome}
+              {nome}
             </p>
           </div>
 
@@ -129,7 +118,10 @@ export default function NavegacaoUsuario() {
                 </DropdownMenuGroup>
                 <DropdownMenuGroup>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem className="text-red-700 flex flex-row justify-between items-center gap-2">
+                  <DropdownMenuItem
+                    className="text-red-700 flex flex-row justify-between items-center gap-2"
+                    onClick={handleLogout}
+                  >
                     Sair
                     <Trash className="ml-2 text-red-700" />
                   </DropdownMenuItem>
