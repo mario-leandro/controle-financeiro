@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { CircleUserRound, Cog, Menu, Trash, X } from "lucide-react";
+import { Cog, Menu, Trash, User, X } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
 import {
@@ -21,7 +21,7 @@ export default function NavegacaoUsuario() {
   const router = useRouter();
 
   const nome = profile?.nome || user?.email?.split("@")[0] || "Usuário";
-  const fotoUsuario = profile?.avatar_url || "/default-user.png";
+  const fotoUsuario = profile?.avatar_url;
   const email = user?.email || "";
 
   const navArray = [
@@ -74,7 +74,7 @@ export default function NavegacaoUsuario() {
                 height={80}
               />
             ) : (
-              <CircleUserRound className="w-15 h-15 md:w-20 md:h-20 text-violet-900" />
+              <User className="w-15 h-15 md:w-20 md:h-20 text-violet-900" />
             )}
             <p className="text-base md:text-lg font-semibold text-violet-900">
               {nome}

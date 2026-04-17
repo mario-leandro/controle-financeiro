@@ -12,6 +12,7 @@ type AuthContextType = {
   signIn: (email: string, senha: string) => Promise<void>;
   signUp: (nome: string, email: string, senha: string) => Promise<void>;
   signOut: () => Promise<void>;
+  refreshProfile: () => Promise<void>;
 };
 
 interface Profile {
@@ -96,6 +97,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setProfile(data);
   }
 
+  async function refreshProfile() {
+    if (!user) return;
+    await fetchProfile(user.id);
+  }
+
   async function signIn(email: string, senha: string) {
     const { error } = await supabase.auth.signInWithPassword({
       email,
@@ -135,7 +141,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, profile, session, loading, signIn, signUp, signOut }}
+      value={{
+        user,
+        profile,
+        session,
+        loading,
+        signIn,
+        signUp,
+        signOut,
+        refreshProfile,
+      }}
     >
       {children}
     </AuthContext.Provider>

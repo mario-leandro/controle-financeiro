@@ -5,7 +5,7 @@ import { useAuth } from "@/context/AuthContext";
 import { uploadAvatar, updateAvatar } from "@/services/uploadAvatar";
 
 export default function AvatarUpload() {
-  const { user } = useAuth();
+  const { user, refreshProfile } = useAuth();
   const [loading, setLoading] = useState(false);
 
   async function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -17,9 +17,9 @@ export default function AvatarUpload() {
 
       const url = await uploadAvatar(file, user.id);
       await updateAvatar(user.id, url);
+      await refreshProfile();
 
       alert("Foto atualizada com sucesso!");
-      window.location.reload();
     } catch (error) {
       console.error(error);
       alert("Erro ao atualizar foto.");
