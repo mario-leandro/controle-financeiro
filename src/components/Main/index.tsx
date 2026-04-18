@@ -1,10 +1,8 @@
 "use client";
 import SaldoCard from "@/components/SaldoCard";
 import CartaoCard from "@/components/CartaoCard";
-import BotaoFlutuante from "@/components/BotaoFlutuante";
 import TransacoesRecebidas from "@/components/TransacoesRecentes";
 import NavegacaoUsuario from "@/components/NavegacaoUsuario";
-import Modal from "@/components/modal";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
@@ -12,17 +10,12 @@ import { getAccounts, getRecentTransactions } from "@/services/dashboard";
 import type { Account, Transaction } from "@/types/financeiro";
 
 export default function Main() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [dashboardLoading, setDashboardLoading] = useState(true);
 
   const { user, loading } = useAuth();
   const router = useRouter();
-
-  const toggleModal = () => {
-    setIsModalOpen(!isModalOpen);
-  };
 
   useEffect(() => {
     if (!loading && !user) {
@@ -86,12 +79,6 @@ export default function Main() {
 
           {/* Transacoes Recebidas */}
           <TransacoesRecebidas transactions={transactions} />
-
-          {/* Botão para adicionar receita/despesa */}
-          <BotaoFlutuante onClick={toggleModal} />
-
-          {/* Modal para escolher opções de ganho e gasto */}
-          <Modal isOpen={isModalOpen} onClose={toggleModal} />
         </div>
       </div>
     </div>

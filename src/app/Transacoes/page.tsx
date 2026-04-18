@@ -1,6 +1,8 @@
 "use client";
 import "@/styles/globals.css";
 import NavegacaoUsuario from "@/components/NavegacaoUsuario";
+import BotaoFlutuante from "@/components/BotaoFlutuante";
+import Modal from "@/components/modal";
 import {
   Table,
   TableBody,
@@ -11,8 +13,10 @@ import {
 } from "@/components/ui/table";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+// import { useState } from "react";
 
 export default function Transacoes() {
+  // const [isModalOpen, setIsModalOpen] = useState(false);
   const { user, loading } = useAuth();
   const router = useRouter();
 
@@ -82,6 +86,10 @@ export default function Transacoes() {
         tipo: "saida",
       },
     ],
+  };
+
+  const toggleModal = () => {
+    router.push("/Transacoes/Receita");
   };
 
   return (
@@ -203,6 +211,12 @@ export default function Transacoes() {
               </div>
             </div>
           </div>
+
+          {/* Botão para adicionar receita/despesa */}
+          <BotaoFlutuante onClick={toggleModal} />
+
+          {/* Modal para escolher opções de ganho e gasto */}
+          {/* <Modal isOpen={isModalOpen} onClose={toggleModal} /> */}
         </div>
       </div>
     </div>
