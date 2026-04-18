@@ -15,6 +15,34 @@ interface CriarTransacaoParams {
   observacao?: string;
 }
 
+export async function getAccounts() {
+  const { data, error } = await supabase
+    .from("accounts")
+    .select("*")
+    .eq("ativa", true)
+    .order("nome", { ascending: true });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data ?? [];
+}
+
+export async function getCategories(tipo: TipoTransacao) {
+  const { data, error } = await supabase
+    .from("categories")
+    .select("*")
+    .eq("tipo", tipo)
+    .order("nome", { ascending: true });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data ?? [];
+}
+
 export async function criarTransacao({
   userId,
   accountId,

@@ -39,3 +39,23 @@ export async function getRecentTransactions(): Promise<Transaction[]> {
 
   return (data as Transaction[]) ?? [];
 }
+
+export function calcularSaldoTotal(
+  accounts: Account[],
+  transactions: Transaction[],
+) {
+  const saldoInicial = accounts.reduce(
+    (total, account) => total + Number(account.saldo_inicial),
+    0,
+  );
+
+  const movimentacao = transactions.reduce((total, transaction) => {
+    const valor = Number(transaction.valor);
+
+    if (transaction.tipo === "receita") return total + valor;
+    if (transaction.tipo === "despesa") return total - valor;
+    return total;
+  }, 0);
+
+  return saldoInicial + movimentacao;
+}
