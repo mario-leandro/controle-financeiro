@@ -1,10 +1,7 @@
 import type { AccountWithBalance } from "@/types/financeiro";
 import { Landmark } from "lucide-react";
-import type { AccountWithBalance } from "@/types/financeiro";
-import { Landmark } from "lucide-react";
 
 interface CartaoCardProps {
-  accounts: AccountWithBalance[];
   accounts: AccountWithBalance[];
 }
 

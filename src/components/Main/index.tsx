@@ -12,7 +12,6 @@ import {
   getRecentTransactions,
   calcularSaldoTotal,
   calcularSaldoPorConta,
-  calcularSaldoPorConta,
 } from "@/services/dashboard";
 import type {
   Account,
@@ -76,10 +75,6 @@ export default function Main() {
   if (!user) return null;
 
   const saldoTotal = calcularSaldoTotal(accounts, transactions);
-  const contasComSaldo: AccountWithBalance[] = calcularSaldoPorConta(
-    accounts,
-    transactions,
-  );
   const contasComSaldo: AccountWithBalance[] = calcularSaldoPorConta(
     accounts,
     transactions,
