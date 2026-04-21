@@ -11,8 +11,13 @@ import {
   getAccounts,
   getRecentTransactions,
   calcularSaldoTotal,
+  calcularSaldoPorConta,
 } from "@/services/dashboard";
-import type { Account, Transaction } from "@/types/financeiro";
+import type {
+  Account,
+  Transaction,
+  AccountWithBalance,
+} from "@/types/financeiro";
 
 export default function Main() {
   const [accounts, setAccounts] = useState<Account[]>([]);
@@ -63,6 +68,10 @@ export default function Main() {
   if (!user) return null;
 
   const saldoTotal = calcularSaldoTotal(accounts, transactions);
+  const contasComSaldo: AccountWithBalance[] = calcularSaldoPorConta(
+    accounts,
+    transactions,
+  );
 
   return (
     <div className="w-full h-screen flex justify-center items-start">
@@ -72,7 +81,7 @@ export default function Main() {
         <div className="w-full h-full flex flex-col gap-5">
           <div className="flex flex-row flex-wrap md:flex-nowrap gap-5">
             <SaldoCard saldo={saldoTotal} />
-            <CartaoCard accounts={accounts} />
+            <CartaoCard accounts={contasComSaldo} />
           </div>
 
           <TransacoesRecebidas transactions={transactions} />

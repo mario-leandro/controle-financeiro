@@ -8,6 +8,10 @@ export interface Account {
   created_at: string;
 }
 
+export interface AccountWithBalance extends Account {
+  saldo_atual: number;
+}
+
 export interface Category {
   id: string;
   user_id: string;
