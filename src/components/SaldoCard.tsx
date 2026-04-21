@@ -10,7 +10,7 @@ export default function SaldoCard({ saldo }: SaldoCardProps) {
       <div className="h-full flex flex-col justify-between gap-3">
         <div className="flex flex-row items-center gap-2">
           <Wallet className="text-violet-900" />
-          <p className="text-base lg:text-lg text-violet-900 font-medium">
+          <p className="text-base lg:text-lg font-bold text-violet-900">
             Carteira
           </p>
         </div>

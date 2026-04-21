@@ -59,3 +59,25 @@ export function calcularSaldoTotal(
 
   return saldoInicial + movimentacao;
 }
+
+export function calcularSaldoPorConta(
+  accounts: Account[],
+  transactions: Transaction[],
+) {
+  return accounts.map((account) => {
+    const movimentacaoConta = transactions
+      .filter((transaction) => transaction.account_id === account.id)
+      .reduce((total, transaction) => {
+        const valor = Number(transaction.valor);
+
+        if (transaction.tipo === "receita") return total + valor;
+        if (transaction.tipo === "despesa") return total - valor;
+        return total;
+      }, 0);
+
+    return {
+      ...account,
+      saldo_atual: Number(account.saldo_inicial) + movimentacaoConta,
+    };
+  });
+}

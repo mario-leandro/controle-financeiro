@@ -4,9 +4,11 @@ import { useRouter } from "next/navigation";
 export default function Modal({
   isOpen,
   onClose,
+  title = "Escolha uma opção",
 }: {
   isOpen: boolean;
   onClose: () => void;
+  title?: string;
 }) {
   const router = useRouter();
 
@@ -18,7 +20,7 @@ export default function Modal({
       onClick={onClose}
     >
       <div className="bg-white p-6 rounded-lg shadow-lg">
-        <h2 className="text-xl font-bold mb-4">Escolha uma opção</h2>
+        <h2 className="text-xl font-bold mb-4">{title}</h2>
         <div className="flex flex-col gap-4">
           <button
             className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
