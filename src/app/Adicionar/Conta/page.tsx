@@ -1,0 +1,64 @@
+"use client";
+import NavegacaoUsuario from "@/components/NavegacaoUsuario";
+import { useState } from "react";
+
+export default function AdicionarFomulario() {
+  const [tipoConta, setTipoConta] = useState("");
+
+  return (
+    <div className="w-full h-screen flex justify-center items-start">
+      <div className="w-full h-full flex flex-row justify-start items-start p-3 md:p-5 gap-5">
+        <NavegacaoUsuario />
+
+        <form className="w-full h-full flex flex-col bg-violet-50 rounded-2xl shadow-sm p-3 md:p-5 gap-3">
+          <h1 className="text-lg md:text-2xl font-bold text-violet-900 mb-4">
+            Adicionar Categoria/Conta
+          </h1>
+
+          <div className="w-full flex flex-col gap-3">
+            <label className="text-base font-semibold text-violet-900">
+              Nome
+            </label>
+            <input
+              type="text"
+              className="w-full p-3 rounded-lg border border-violet-300"
+              placeholder="Ex: Inter, Nubank, Mercado Pago..."
+            />
+          </div>
+
+          <div className="w-full flex flex-col gap-3">
+            <label className="text-base font-semibold text-violet-900">
+              Tipo
+            </label>
+            <select
+              value={tipoConta}
+              onChange={(e) => setTipoConta(e.target.value)}
+              className="w-full p-3 rounded-lg border border-violet-300"
+            >
+              <option value="">Selecione o tipo da conta</option>
+              <option value="conta_corrente">Conta Corrente</option>
+              <option value="poupanca">Conta Poupança</option>
+              <option value="carteira">Carteira</option>
+              <option value="cartao">Cartão</option>
+              <option value="investimento">Investimento</option>
+            </select>
+          </div>
+
+          <div className="w-full flex flex-col gap-3">
+            <label className="text-base font-semibold text-violet-900">
+              Saldo inicial
+            </label>
+            <input type="number" placeholder="R$ 0,00" />
+          </div>
+
+          <button
+            type="submit"
+            className="px-5 py-3 bg-violet-700 text-white rounded-lg hover:bg-violet-800 transition-colors disabled:opacity-60"
+          >
+            Adicionar
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+}

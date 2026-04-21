@@ -162,7 +162,7 @@ export default function AddGanho() {
           onSubmit={handleSubmit}
           className="w-full h-full bg-violet-50 flex flex-col justify-start items-start gap-5 rounded-2xl p-5 shadow-lg"
         >
-          <h1 className="text-2xl md:text-3xl font-bold text-violet-900">
+          <h1 className="text-lg md:text-2xl font-bold text-violet-900">
             Adicionar Nova Transação
           </h1>
 

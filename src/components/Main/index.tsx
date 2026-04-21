@@ -89,7 +89,6 @@ export default function Main() {
           <div className="flex flex-row flex-wrap md:flex-nowrap gap-5">
             <SaldoCard saldo={saldoTotal} />
             <CartaoCard accounts={contasComSaldo} />
-            <CartaoCard accounts={contasComSaldo} />
           </div>
 
           <TransacoesRecebidas transactions={transactions} />
@@ -99,6 +98,11 @@ export default function Main() {
             isOpen={isModalOpen}
             onClose={toggleModal}
             title="O que deseja adicionar?"
+            buttons={[
+              { title: "Adicionar Ganho/Gasto", path: "/Transacoes/Receita" },
+              { title: "Adicionar Conta", path: "/Adicionar/Conta" },
+              { title: "Adicionar Categoria", path: "/Adicionar/Categoria" },
+            ]}
           />
         </div>
       </div>
