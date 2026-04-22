@@ -1,15 +1,24 @@
 "use client";
 import Image from "next/image";
-import { Cog, Menu, Trash, User, X } from "lucide-react";
+import {
+  ArrowLeftRight,
+  ChevronDown,
+  CircleDollarSign,
+  ClipboardMinus,
+  Cog,
+  Goal,
+  LayoutDashboard,
+  Menu,
+  Plus,
+  User,
+  X,
+} from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
@@ -25,11 +34,31 @@ export default function NavegacaoUsuario() {
   const email = user?.email || "";
 
   const navArray = [
-    { nome: "Dashboard", link: "/Dashboard" },
-    { nome: "Relatórios", link: "/Relatorios" },
-    { nome: "Transações", link: "/Transacoes" },
-    { nome: "Metas", link: "/Metas" },
-    { nome: "Pagamentos", link: "/Pagamentos" },
+    {
+      nome: "Dashboard",
+      link: "/Dashboard",
+      icon: <LayoutDashboard />,
+    },
+    {
+      nome: "Relatórios",
+      link: "/Relatorios",
+      icon: <ClipboardMinus />,
+    },
+    {
+      nome: "Transações",
+      link: "/Transacoes",
+      icon: <ArrowLeftRight />,
+    },
+    {
+      nome: "Metas",
+      link: "/Metas",
+      icon: <Goal />,
+    },
+    {
+      nome: "Pagamentos",
+      link: "/Pagamentos",
+      icon: <CircleDollarSign />,
+    },
   ];
 
   async function handleLogout() {
@@ -89,47 +118,68 @@ export default function NavegacaoUsuario() {
                     href={item.link}
                     className="flex flex-row items-center gap-3 text-base text-violet-900 transition-all rounded-lg delay-75 shadow-sm p-3 hover:bg-violet-700 hover:text-white hover:p-3"
                   >
+                    {item.icon}
                     <span className="text-xl font-semibold  ">{item.nome}</span>
                   </Link>
                 </li>
               ))}
+              <li className="w-full">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button className="w-full flex flex-row items-center justify-between gap-3 text-base text-violet-900 transition-all rounded-lg shadow-sm p-3 hover:bg-violet-700 hover:text-white cursor-pointer">
+                      <span className="flex items-center gap-3">
+                        <Plus size={18} />
+                        <span className="text-xl font-semibold">Adicionar</span>
+                      </span>
+                      <ChevronDown size={18} />
+                    </button>
+                  </DropdownMenuTrigger>
+
+                  <DropdownMenuContent
+                    align="start"
+                    className="w-56 bg-violet-50 border border-violet-200 shadow-md"
+                  >
+                    <DropdownMenuItem
+                      className="text-base font-semibold bg-violet-50 text-violet-900 hover:bg-violet-700 hover:text-white"
+                      asChild
+                    >
+                      <Link href="/Transacoes/Receita">
+                        Adicionar Ganho/Gasto
+                      </Link>
+                    </DropdownMenuItem>
+
+                    <DropdownMenuItem
+                      className="text-base font-semibold bg-violet-50 text-violet-900 hover:bg-violet-700 hover:text-white"
+                      asChild
+                    >
+                      <Link href="/Adicionar/Conta">Adicionar Conta</Link>
+                    </DropdownMenuItem>
+
+                    <DropdownMenuItem
+                      className="text-base font-semibold bg-violet-50 text-violet-900 hover:bg-violet-700 hover:text-white"
+                      asChild
+                    >
+                      <Link href="/Adicionar/Categoria">
+                        Adicionar Categoria
+                      </Link>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </li>
             </ul>
           </nav>
         </div>
 
         <div className="w-full flex justify-center items-center">
-          <span className="flex flex-row justify-center items-center gap-1 cursor-pointer">
-            <DropdownMenu>
-              <DropdownMenuTrigger className="flex flex-row justify-center items-center gap-1">
-                <Cog className="text-violet-900" />
-                <p className="text-lg font-semibold text-violet-900 hidden md:block">
-                  Configurações
-                </p>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="bg-violet-50 border-violet-200">
-                <DropdownMenuGroup>
-                  <DropdownMenuLabel>Minha Conta</DropdownMenuLabel>
-                  <DropdownMenuItem>Perfil</DropdownMenuItem>
-                  <DropdownMenuItem>Faturamento</DropdownMenuItem>
-                </DropdownMenuGroup>
-                <DropdownMenuGroup>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem>Equipe</DropdownMenuItem>
-                  <DropdownMenuItem>Assinatura</DropdownMenuItem>
-                </DropdownMenuGroup>
-                <DropdownMenuGroup>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem
-                    className="text-red-700 flex flex-row justify-between items-center gap-2"
-                    onClick={handleLogout}
-                  >
-                    Sair
-                    <Trash className="ml-2 text-red-700" />
-                  </DropdownMenuItem>
-                </DropdownMenuGroup>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </span>
+          <Link
+            className="flex flex-row justify-center items-center gap-1 cursor-pointer"
+            href="/Configuracoes"
+          >
+            <Cog className="text-violet-900" />
+            <p className="text-lg font-semibold text-violet-900 hidden md:block">
+              Configurações
+            </p>
+          </Link>
         </div>
       </div>
     </>

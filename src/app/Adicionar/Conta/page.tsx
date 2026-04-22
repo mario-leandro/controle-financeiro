@@ -10,9 +10,9 @@ export default function AdicionarFomulario() {
       <div className="w-full h-full flex flex-row justify-start items-start p-3 md:p-5 gap-5">
         <NavegacaoUsuario />
 
-        <form className="w-full h-full flex flex-col bg-violet-50 rounded-2xl shadow-sm p-3 md:p-5 gap-3">
+        <form className="w-full h-auto flex flex-col bg-violet-50 rounded-2xl shadow-sm p-3 md:p-5 gap-3">
           <h1 className="text-lg md:text-2xl font-bold text-violet-900 mb-4">
-            Adicionar Categoria/Conta
+            Adicionar Conta
           </h1>
 
           <div className="w-full flex flex-col gap-3">
@@ -48,7 +48,11 @@ export default function AdicionarFomulario() {
             <label className="text-base font-semibold text-violet-900">
               Saldo inicial
             </label>
-            <input type="number" placeholder="R$ 0,00" />
+            <input
+              type="number"
+              className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500"
+              placeholder="R$ 0,00"
+            />
           </div>
 
           <button
