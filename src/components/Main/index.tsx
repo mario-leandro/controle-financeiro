@@ -18,11 +18,8 @@ import type {
   Transaction,
   AccountWithBalance,
 } from "@/types/financeiro";
-import BotaoFlutuante from "../BotaoFlutuante";
-import Modal from "../modal";
 
 export default function Main() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [dashboardLoading, setDashboardLoading] = useState(true);
@@ -35,10 +32,6 @@ export default function Main() {
       router.push("/auth/login");
     }
   }, [loading, user, router]);
-
-  const toggleModal = () => {
-    setIsModalOpen((prev) => !prev);
-  };
 
   const loadDashboardData = useCallback(async () => {
     if (!user) return;
@@ -92,18 +85,6 @@ export default function Main() {
           </div>
 
           <TransacoesRecebidas transactions={transactions} />
-
-          <BotaoFlutuante onClick={toggleModal} />
-          <Modal
-            isOpen={isModalOpen}
-            onClose={toggleModal}
-            title="O que deseja adicionar?"
-            buttons={[
-              { title: "Adicionar Ganho/Gasto", path: "/Transacoes/Receita" },
-              { title: "Adicionar Conta", path: "/Adicionar/Conta" },
-              { title: "Adicionar Categoria", path: "/Adicionar/Categoria" },
-            ]}
-          />
         </div>
       </div>
     </div>
