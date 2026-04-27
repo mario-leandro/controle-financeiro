@@ -4,6 +4,9 @@ export interface Account {
   nome: string;
   tipo: "conta_corrente" | "poupanca" | "carteira" | "cartao" | "investimento";
   saldo_inicial: number;
+  limite_total: number;
+  dia_fechamento: number;
+  dia_vencimento: number;
   ativa: boolean;
   created_at: string;
 }

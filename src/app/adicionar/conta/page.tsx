@@ -1,5 +1,6 @@
 "use client";
 
+import Alerta from "@/components/Alerta";
 import NavegacaoUsuario from "@/components/NavegacaoUsuario";
 import { useAuth } from "@/context/AuthContext";
 import { criarConta } from "@/services/transactions";
@@ -20,6 +21,9 @@ export default function AdicionarConta() {
   const [nome, setNome] = useState("");
   const [tipoConta, setTipoConta] = useState<TipoConta | "">("");
   const [saldoInicial, setSaldoInicial] = useState("");
+  const [limiteTotal, setLimiteTotal] = useState("");
+  const [fechamentoCartao, setFechamentoCartao] = useState("");
+  const [vencimentoCartao, setVencimentoCartao] = useState("");
   const [salvando, setSalvando] = useState(false);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -51,7 +55,7 @@ export default function AdicionarConta() {
       });
 
       alert("Conta adicionada com sucesso!");
-      router.push("/Dashboard");
+      router.push("/dashboard");
     } catch (error) {
       console.error(error);
       alert("Erro ao adicionar conta.");
@@ -119,22 +123,65 @@ export default function AdicionarConta() {
               </select>
             </div>
 
-            <div className="flex flex-col gap-3">
-              <label className="text-base font-semibold text-violet-900">
-                Saldo inicial
-              </label>
-              <input
-                value={saldoInicial}
-                onChange={(e) => setSaldoInicial(e.target.value)}
-                type="number"
-                step="0.01"
-                placeholder="Ex: 500.00"
-                className="w-full p-3 rounded-lg border border-violet-300 focus:outline-none focus:ring-2 focus:ring-violet-500"
-              />
-              <p className="text-xs text-violet-600">
-                Use 0 caso esteja começando do zero.
-              </p>
-            </div>
+            {tipoConta === "cartao" ? (
+              <div className="flex flex-col gap-3">
+                <label className="text-base font-semibold text-violet-900">
+                  Limite Total
+                </label>
+                <input
+                  value={limiteTotal}
+                  onChange={(e) => setLimiteTotal(e.target.value)}
+                  type="number"
+                  step="0.01"
+                  placeholder="Ex: 500.00"
+                  className="w-full p-3 rounded-lg border border-violet-300 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                />
+                <p className="text-xs text-violet-600">
+                  Caso não preencha, o valor será 0
+                </p>
+
+                <label className="text-base font-semibold text-violet-900">
+                  Data Fechamento da fatura
+                </label>
+                <input
+                  value={fechamentoCartao}
+                  onChange={(e) => setFechamentoCartao(e.target.value)}
+                  type="number"
+                  step="0.01"
+                  placeholder="Ex: 14"
+                  className="w-full p-3 rounded-lg border border-violet-300 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                />
+
+                <label className="text-base font-semibold text-violet-900">
+                  Data Vencimento da fatura
+                </label>
+                <input
+                  value={vencimentoCartao}
+                  onChange={(e) => setVencimentoCartao(e.target.value)}
+                  type="number"
+                  step="0.01"
+                  placeholder="Ex: 21"
+                  className="w-full p-3 rounded-lg border border-violet-300 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                />
+              </div>
+            ) : (
+              <div className="flex flex-col gap-3">
+                <label className="text-base font-semibold text-violet-900">
+                  Saldo inicial
+                </label>
+                <input
+                  value={saldoInicial}
+                  onChange={(e) => setSaldoInicial(e.target.value)}
+                  type="number"
+                  step="0.01"
+                  placeholder="Ex: 500.00"
+                  className="w-full p-3 rounded-lg border border-violet-300 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                />
+                <p className="text-xs text-violet-600">
+                  Caso não preencha, o valor será 0
+                </p>
+              </div>
+            )}
 
             <div className="flex flex-col sm:flex-row gap-3 pt-3">
               <button
@@ -147,7 +194,7 @@ export default function AdicionarConta() {
 
               <button
                 type="button"
-                onClick={() => router.push("/Dashboard")}
+                onClick={() => router.push("/dashboard")}
                 className="px-5 py-3 bg-violet-100 text-violet-800 rounded-lg hover:bg-violet-200 transition-colors"
               >
                 Cancelar

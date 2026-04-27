@@ -1,13 +1,13 @@
 import type { AccountWithBalance } from "@/types/financeiro";
 import { Landmark } from "lucide-react";
 
-interface CartaoCardProps {
+interface ContasProps {
   accounts: AccountWithBalance[];
 }
 
-export default function CartaoCard({ accounts }: CartaoCardProps) {
+export default function Contas({ accounts }: ContasProps) {
   return (
-    <div className="w-full md:w-1/2 h-auto bg-violet-50 rounded-2xl shadow-sm p-3 md:p-5">
+    <div className="w-full h-auto bg-violet-50 rounded-2xl shadow-sm p-3 md:p-5">
       <div className="h-full flex flex-col justify-between gap-3">
         <div className="flex flex-row items-center gap-2">
           <Landmark className="text-violet-900" />
@@ -35,10 +35,22 @@ export default function CartaoCard({ accounts }: CartaoCardProps) {
                 </div>
 
                 <span className="font-bold text-violet-700">
-                  {Number(account.saldo_atual).toLocaleString("pt-BR", {
-                    style: "currency",
-                    currency: "BRL",
-                  })}
+                  <p>
+                    {Number(account.saldo_atual).toLocaleString("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    })}
+                  </p>
+
+                  {account.tipo.replace("_", " ") === "cartao" && (
+                    <p className="text-sm text-gray-500 capitalize">
+                      R${" "}
+                      {Number(account.limite_total).toLocaleString("pt-BR", {
+                        style: "currency",
+                        currency: "BRL",
+                      })}
+                    </p>
+                  )}
                 </span>
               </div>
             ))}

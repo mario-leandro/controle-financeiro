@@ -2,7 +2,6 @@
 import "@/styles/globals.css";
 import NavegacaoUsuario from "@/components/NavegacaoUsuario";
 import BotaoFlutuante from "@/components/BotaoFlutuante";
-import Modal from "@/components/modal";
 import {
   Table,
   TableBody,

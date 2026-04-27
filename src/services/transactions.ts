@@ -79,10 +79,14 @@ export async function criarCategoria({
   userId,
   nome,
   tipo,
+  cor,
+  icone,
 }: {
   userId: string;
   nome: string;
   tipo: TipoTransacao;
+  cor?: string;
+  icone?: string | null;
 }) {
   const { data, error } = await supabase
     .from("categories")
@@ -90,6 +94,8 @@ export async function criarCategoria({
       user_id: userId,
       nome,
       tipo,
+      cor: cor || null,
+      icone: icone || null,
     })
     .select()
     .single();

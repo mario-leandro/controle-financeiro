@@ -1,7 +1,7 @@
 "use client";
 
 import SaldoCard from "@/components/SaldoCard";
-import CartaoCard from "@/components/CartaoCard";
+import Contas from "@/components/Contas";
 import TransacoesRecebidas from "@/components/TransacoesRecentes";
 import NavegacaoUsuario from "@/components/NavegacaoUsuario";
 import { useState, useEffect, useCallback } from "react";
@@ -18,11 +18,12 @@ import type {
   Transaction,
   AccountWithBalance,
 } from "@/types/financeiro";
+import CartaoCard from "../CartãoCard";
 
 export default function Main() {
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [dashboardLoading, setDashboardLoading] = useState(true);
+  const [dashboardLoading, setDashboardLoading] = useState(false);
 
   const { user, loading } = useAuth();
   const router = useRouter();
@@ -34,7 +35,10 @@ export default function Main() {
   }, [loading, user, router]);
 
   const loadDashboardData = useCallback(async () => {
-    if (!user) return;
+    if (!user) {
+      setDashboardLoading(false);
+      return;
+    }
 
     try {
       setDashboardLoading(true);
@@ -57,21 +61,40 @@ export default function Main() {
     loadDashboardData();
   }, [loadDashboardData]);
 
-  if (loading || dashboardLoading) {
+  if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p>Carregando...</p>
+        <p>Carregando autenticação ...</p>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return null;
+  }
+
+  if (dashboardLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p>Carregando Dashboard ...</p>
       </div>
     );
   }
 
   if (!user) return null;
 
-  const saldoTotal = calcularSaldoTotal(accounts, transactions);
   const contasComSaldo: AccountWithBalance[] = calcularSaldoPorConta(
     accounts,
     transactions,
   );
+
+  const contasComSaldoReal = contasComSaldo.filter(
+    (account) => account.tipo !== "cartao",
+  );
+
+  const cartoes = contasComSaldo.filter((account) => account.tipo === "cartao");
+
+  const saldoTotal = calcularSaldoTotal(contasComSaldoReal, transactions);
 
   return (
     <div className="w-full h-screen flex justify-center items-start">
@@ -79,9 +102,10 @@ export default function Main() {
         <NavegacaoUsuario />
 
         <div className="w-full h-full flex flex-col gap-5">
-          <div className="flex flex-row flex-wrap md:flex-nowrap gap-5">
+          <div className="flex flex-col gap-5">
             <SaldoCard saldo={saldoTotal} />
-            <CartaoCard accounts={contasComSaldo} />
+            <CartaoCard cartoes={cartoes} />
+            <Contas accounts={contasComSaldo} />
           </div>
 
           <TransacoesRecebidas transactions={transactions} />
