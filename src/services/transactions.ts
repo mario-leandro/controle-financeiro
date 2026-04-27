@@ -105,10 +105,12 @@ export async function criarConta({
   userId,
   nome,
   tipo = "conta_corrente",
+  saldoInicial = 0,
 }: {
   userId: string;
   nome: string;
   tipo?: "conta_corrente" | "poupanca" | "carteira" | "cartao" | "investimento";
+  saldoInicial?: number;
 }) {
   const { data, error } = await supabase
     .from("accounts")
@@ -116,7 +118,8 @@ export async function criarConta({
       user_id: userId,
       nome,
       tipo,
-      saldo_inicial: 0,
+      saldo_inicial: saldoInicial,
+      ativa: true,
     })
     .select()
     .single();

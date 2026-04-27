@@ -89,7 +89,7 @@ export default function Transacoes() {
   };
 
   const toggleModal = () => {
-    router.push("/Transacoes/Receita");
+    router.push("/transacoes/receita");
   };
 
   return (

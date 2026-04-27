@@ -36,35 +36,30 @@ export default function NavegacaoUsuario() {
   const navArray = [
     {
       nome: "Dashboard",
-      link: "/Dashboard",
+      link: "/dashboard",
       icon: <LayoutDashboard />,
     },
     {
       nome: "Relatórios",
-      link: "/Relatorios",
+      link: "/relatorios",
       icon: <ClipboardMinus />,
     },
     {
       nome: "Transações",
-      link: "/Transacoes",
+      link: "/transacoes",
       icon: <ArrowLeftRight />,
     },
     {
       nome: "Metas",
-      link: "/Metas",
+      link: "/metas",
       icon: <Goal />,
     },
     {
       nome: "Pagamentos",
-      link: "/Pagamentos",
+      link: "/pagamentos",
       icon: <CircleDollarSign />,
     },
   ];
-
-  async function handleLogout() {
-    await signOut();
-    router.push("/auth/login");
-  }
 
   return (
     <>
@@ -143,7 +138,7 @@ export default function NavegacaoUsuario() {
                       className="text-base font-semibold bg-violet-50 text-violet-900 hover:bg-violet-700 hover:text-white"
                       asChild
                     >
-                      <Link href="/Transacoes/Receita">
+                      <Link href="/transacoes/receita">
                         Adicionar Ganho/Gasto
                       </Link>
                     </DropdownMenuItem>
@@ -152,14 +147,14 @@ export default function NavegacaoUsuario() {
                       className="text-base font-semibold bg-violet-50 text-violet-900 hover:bg-violet-700 hover:text-white"
                       asChild
                     >
-                      <Link href="/Adicionar/Conta">Adicionar Conta</Link>
+                      <Link href="/adicionar/conta">Adicionar Conta</Link>
                     </DropdownMenuItem>
 
                     <DropdownMenuItem
                       className="text-base font-semibold bg-violet-50 text-violet-900 hover:bg-violet-700 hover:text-white"
                       asChild
                     >
-                      <Link href="/Adicionar/Categoria">
+                      <Link href="/adicionar/categoria">
                         Adicionar Categoria
                       </Link>
                     </DropdownMenuItem>
@@ -173,7 +168,7 @@ export default function NavegacaoUsuario() {
         <div className="w-full flex justify-center items-center">
           <Link
             className="flex flex-row justify-center items-center gap-1 cursor-pointer"
-            href="/Configuracoes"
+            href="/configuracoes"
           >
             <Cog className="text-violet-900" />
             <p className="text-lg font-semibold text-violet-900 hidden md:block">
