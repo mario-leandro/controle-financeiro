@@ -19,11 +19,13 @@ import type {
   AccountWithBalance,
 } from "@/types/financeiro";
 import CartaoCard from "../CartãoCard";
+import { withTimeout } from "@/utils/utils";
 
 export default function Main() {
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [dashboardLoading, setDashboardLoading] = useState(false);
+  const [dashboardLoaded, setDashboardLoaded] = useState(false);
 
   const { user, loading } = useAuth();
   const router = useRouter();
@@ -35,31 +37,42 @@ export default function Main() {
   }, [loading, user, router]);
 
   const loadDashboardData = useCallback(async () => {
-    if (!user) {
-      setDashboardLoading(false);
-      return;
-    }
+    if (!user) return;
 
     try {
       setDashboardLoading(true);
 
-      const [accountsData, transactionsData] = await Promise.all([
-        getAccounts(),
-        getRecentTransactions(),
-      ]);
+      console.log("buscando contas");
+      const accountsData = await withTimeout(getAccounts());
+      console.log("contas carregadas");
+
+      console.log("buscando transações");
+      const transactionsData = await withTimeout(getRecentTransactions());
+      console.log("transações carregadas");
 
       setAccounts(accountsData);
       setTransactions(transactionsData);
     } catch (error) {
       console.error("Erro ao carregar dashboard:", error);
     } finally {
+      console.log("finalizou dashboard");
       setDashboardLoading(false);
     }
   }, [user]);
 
   useEffect(() => {
-    loadDashboardData();
-  }, [loadDashboardData]);
+    if (loading) return;
+
+    if (!user) {
+      router.push("/auth/login");
+      return;
+    }
+
+    if (!dashboardLoaded) {
+      loadDashboardData();
+      setDashboardLoaded(true);
+    }
+  }, [loading, user, router, loadDashboardData, dashboardLoaded]);
 
   if (loading) {
     return (
@@ -69,9 +82,7 @@ export default function Main() {
     );
   }
 
-  if (!user) {
-    return null;
-  }
+  if (!user) return null;
 
   if (dashboardLoading) {
     return (
@@ -80,8 +91,6 @@ export default function Main() {
       </div>
     );
   }
-
-  if (!user) return null;
 
   const contasComSaldo: AccountWithBalance[] = calcularSaldoPorConta(
     accounts,

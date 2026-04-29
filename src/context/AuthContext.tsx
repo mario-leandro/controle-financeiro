@@ -3,7 +3,6 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import type { User, Session } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/client";
-import Alerta from "@/components/Alerta";
 
 type AuthContextType = {
   user: User | null;
@@ -43,9 +42,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       if (error) {
         console.error("Erro ao obter sessão:", error.message);
-        setTimeout(() => {
-          <Alerta success={false} message={error.message} />;
-        }, 3000);
       }
 
       if (!mounted) return;
@@ -94,9 +90,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     if (error) {
       console.error("Erro ao buscar profile:", error.message);
-      setTimeout(() => {
-        <Alerta success={false} message={error.message} />;
-      }, 3000);
       setProfile(null);
       return;
     }
@@ -116,9 +109,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     });
 
     if (error) {
-      setTimeout(() => {
-        <Alerta success={false} message={error.message} />;
-      }, 3000);
       throw new Error(error.message);
     }
   }
@@ -135,9 +125,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     });
 
     if (error) {
-      setTimeout(() => {
-        <Alerta success={false} message={error.message} />;
-      }, 3000);
       throw new Error(error.message);
     }
   }
@@ -146,9 +133,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const { error } = await supabase.auth.signOut();
 
     if (error) {
-      setTimeout(() => {
-        <Alerta success={false} message={error.message} />;
-      }, 3000);
       throw new Error(error.message);
     }
 
@@ -177,12 +161,6 @@ export function useAuth() {
   const context = useContext(AuthContext);
 
   if (!context) {
-    setTimeout(() => {
-      <Alerta
-        success={false}
-        message={"useAuth deve ser usado dentro de AuthProvider"}
-      />;
-    }, 3000);
     throw new Error("useAuth deve ser usado dentro de AuthProvider");
   }
 
