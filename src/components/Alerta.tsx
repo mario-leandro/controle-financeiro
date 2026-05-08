@@ -17,7 +17,7 @@ export default function Alerta({
 
   return (
     <div
-      className={`fixed top-4 right-4 ${successColor} text-white p-4 rounded shadow-lg`}
+      className={`fixed w-auto h-auto top-4 right-4 ${successColor} text-white p-4 rounded shadow-lg z-10`}
     >
       <p>{message}</p>
       <button

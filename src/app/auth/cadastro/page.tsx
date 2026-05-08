@@ -3,6 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
+import Alerta from "@/components/Alerta";
+import { exit } from "process";
 
 export default function CadastroPage() {
   const router = useRouter();
@@ -18,7 +20,7 @@ export default function CadastroPage() {
     e.preventDefault();
 
     if (senha !== confirmaSenha) {
-      alert("As senhas não coincidem.");
+      <Alerta success={false} message="As senhas não coincidem." />;
       return;
     }
 
@@ -26,14 +28,15 @@ export default function CadastroPage() {
 
     try {
       await signUp(nome, email, senha);
-      alert(
-        "Conta criada com sucesso. Verifique seu email se a confirmação estiver ativada.",
-      );
+      <Alerta
+        success={true}
+        message="Conta criada com sucesso. Verifique seu email se a confirmação estiver ativada."
+      />;
       router.push("/auth/login");
     } catch (error) {
       const message =
         error instanceof Error ? error.message : "Erro ao criar conta";
-      alert(message);
+      <Alerta success={false} message={message} />;
     } finally {
       setSubmitting(false);
     }

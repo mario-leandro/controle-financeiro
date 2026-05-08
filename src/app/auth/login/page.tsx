@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
+import Alerta from "@/components/Alerta";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -22,7 +23,7 @@ export default function LoginPage() {
     } catch (error) {
       const message =
         error instanceof Error ? error.message : "Erro ao fazer login";
-      alert(message);
+      <Alerta success={false} message={message} />;
     } finally {
       setSubmitting(false);
     }

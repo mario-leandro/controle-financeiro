@@ -26,7 +26,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" suppressHydrationWarning>
       <body
-        className={`${inter.variable} antialiased min-h-screen bg-violet-200 flex justify-center items-center`}
+        className={`${inter.variable} antialiased min-h-screen bg-violet-200 flex justify-center items-center relative`}
       >
         <AuthProvider>{children}</AuthProvider>
       </body>
