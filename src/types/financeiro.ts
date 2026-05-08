@@ -1,8 +1,9 @@
+// Interfaces
 export interface Account {
   id: string;
   user_id: string;
   nome: string;
-  tipo: "conta_corrente" | "poupanca" | "carteira" | "cartao" | "investimento";
+  tipo: TipoConta;
   saldo_inicial: number;
   limite_total: number;
   dia_fechamento: number;
@@ -19,7 +20,7 @@ export interface Category {
   id: string;
   user_id: string;
   nome: string;
-  tipo: "receita" | "despesa";
+  tipo: TipoTransacao;
   cor: string | null;
   icone: string | null;
   created_at: string;
@@ -30,7 +31,7 @@ export interface Transaction {
   user_id: string;
   account_id: string;
   category_id: string | null;
-  tipo: "receita" | "despesa" | "transferencia";
+  tipo: TipoTransacao;
   descricao: string;
   valor: number;
   data_transacao: string;
@@ -42,3 +43,22 @@ export interface Transaction {
     icone: string | null;
   } | null;
 }
+export interface CriarTransacaoParams {
+  user_id: string;
+  account_id: string;
+  category_id: string | null;
+  tipo: TipoTransacao;
+  descricao: string;
+  valor: number;
+  data_transacao: string;
+  observacao?: string;
+}
+
+// Types
+export type TipoTransacao = "receita" | "despesa";
+export type TipoConta =
+  | "conta_corrente"
+  | "poupanca"
+  | "carteira"
+  | "cartao"
+  | "investimento";

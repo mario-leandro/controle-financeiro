@@ -1,43 +1,26 @@
-import { createClient } from "@/lib/supabase/client";
-import type { Account, Transaction } from "@/types/financeiro";
+import { sendRequest } from "@/services/api";
+import { Account, Transaction } from "@/types/financeiro";
 
-const supabase = createClient();
+export async function getAccounts() {
+  const response = await sendRequest([
+    {
+      type: "accounts",
+      action: "list",
+    },
+  ]);
 
-export async function getAccounts(): Promise<Account[]> {
-  const { data, error } = await supabase
-    .from("accounts")
-    .select("*")
-    .eq("ativa", true)
-    .order("created_at", { ascending: false });
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  return (data as Account[]) ?? [];
+  return response.data.data;
 }
 
-export async function getRecentTransactions(): Promise<Transaction[]> {
-  const { data, error } = await supabase
-    .from("transactions")
-    .select(
-      `
-      *,
-      categories (
-        nome,
-        cor,
-        icone
-      )
-    `,
-    )
-    .order("data_transacao", { ascending: false })
-    .limit(10);
+export async function getTransactions() {
+  const response = await sendRequest([
+    {
+      type: "transactions",
+      action: "list",
+    },
+  ]);
 
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  return (data as Transaction[]) ?? [];
+  return response.data.data;
 }
 
 export function calcularSaldoTotal(

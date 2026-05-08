@@ -1,138 +1,117 @@
-import { createClient } from "@/lib/supabase/client";
-
-const supabase = createClient();
-
-type TipoTransacao = "receita" | "despesa";
-
-interface CriarTransacaoParams {
-  userId: string;
-  accountId: string;
-  categoryId: string | null;
-  tipo: TipoTransacao;
-  descricao: string;
-  valor: number;
-  dataTransacao: string;
-  observacao?: string;
-}
+import { sendRequest } from "@/services/api";
+import {
+  TipoTransacao,
+  CriarTransacaoParams,
+  Category,
+  Account,
+} from "@/types/financeiro";
 
 export async function getAccounts() {
-  const { data, error } = await supabase
-    .from("accounts")
-    .select("*")
-    .eq("ativa", true)
-    .order("nome", { ascending: true });
+  const response = await sendRequest([
+    {
+      type: "accounts",
+      action: "list",
+    },
+  ]);
 
-  if (error) {
-    throw new Error(error.message);
-  }
+  return response.data.data;
+}
 
-  return data ?? [];
+export async function criarConta({
+  user_id,
+  nome,
+  tipo,
+  saldo_inicial = 0,
+}: Account) {
+  const response = await sendRequest([
+    {
+      type: "accounts",
+      action: "create",
+      data: {
+        user_id: user_id,
+        nome,
+        tipo,
+        saldo_inicial: saldo_inicial || 0,
+      },
+    },
+  ]);
+
+  return response.data.data;
 }
 
 export async function getCategories(tipo: TipoTransacao) {
-  const { data, error } = await supabase
-    .from("categories")
-    .select("*")
-    .eq("tipo", tipo)
-    .order("nome", { ascending: true });
+  const response = await sendRequest([
+    {
+      type: "categories",
+      action: "list",
+      data: { tipo },
+    },
+  ]);
 
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  return data ?? [];
-}
-
-export async function criarTransacao({
-  userId,
-  accountId,
-  categoryId,
-  tipo,
-  descricao,
-  valor,
-  dataTransacao,
-  observacao,
-}: CriarTransacaoParams) {
-  const { data, error } = await supabase
-    .from("transactions")
-    .insert({
-      user_id: userId,
-      account_id: accountId,
-      category_id: categoryId,
-      tipo,
-      descricao,
-      valor,
-      data_transacao: dataTransacao,
-      observacao: observacao || null,
-    })
-    .select()
-    .single();
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  return data;
+  return response.data.data;
 }
 
 export async function criarCategoria({
-  userId,
+  user_id,
   nome,
   tipo,
   cor,
   icone,
-}: {
-  userId: string;
-  nome: string;
-  tipo: TipoTransacao;
-  cor?: string;
-  icone?: string | null;
-}) {
-  const { data, error } = await supabase
-    .from("categories")
-    .insert({
-      user_id: userId,
-      nome,
-      tipo,
-      cor: cor || null,
-      icone: icone || null,
-    })
-    .select()
-    .single();
+}: Category) {
+  const response = await sendRequest([
+    {
+      type: "categories",
+      action: "create",
+      data: {
+        user_id: user_id,
+        nome,
+        tipo,
+        cor: cor || null,
+        icone: icone || null,
+      },
+    },
+  ]);
 
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  return data;
+  return response.data.data;
 }
 
-export async function criarConta({
-  userId,
-  nome,
-  tipo = "conta_corrente",
-  saldoInicial = 0,
-}: {
-  userId: string;
-  nome: string;
-  tipo?: "conta_corrente" | "poupanca" | "carteira" | "cartao" | "investimento";
-  saldoInicial?: number;
-}) {
-  const { data, error } = await supabase
-    .from("accounts")
-    .insert({
-      user_id: userId,
-      nome,
-      tipo,
-      saldo_inicial: saldoInicial,
-      ativa: true,
-    })
-    .select()
-    .single();
+export async function getTransactions() {
+  const response = await sendRequest([
+    {
+      type: "transactions",
+      action: "list",
+    },
+  ]);
 
-  if (error) {
-    throw new Error(error.message);
-  }
+  return response.data.data;
+}
 
-  return data;
+export async function criarTransacao({
+  user_id,
+  account_id,
+  category_id,
+  tipo,
+  descricao,
+  valor,
+  data_transacao,
+  observacao,
+}: CriarTransacaoParams) {
+  const response = await sendRequest([
+    {
+      type: "transactions",
+      action: "create",
+      data: {
+        user_id: user_id,
+        account_id: account_id,
+        category_id: category_id,
+        tipo,
+        descricao,
+        valor,
+        data_transacao: data_transacao,
+        observacao: observacao || null,
+      },
+    },
+  ]);
+
+  return response.data.data;
 }
