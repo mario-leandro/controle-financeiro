@@ -7,14 +7,12 @@ const arrUrls = [
 export async function sendRequest(
   payload: Array<{ type: string; action: string; data?: any }>,
 ) {
-  const payloadString = JSON.stringify(payload);
-
-  const response = await fetch(`${arrUrls[1]}`, {
+  const response = await fetch(`${arrUrls[0]}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: payloadString,
+    body: payload ? JSON.stringify(payload) : undefined,
   });
 
   return response.json();

@@ -12,6 +12,10 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [alerta, setAlerta] = useState<{
+    success: boolean;
+    message: string;
+  } | null>(null);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -23,7 +27,11 @@ export default function LoginPage() {
     } catch (error) {
       const message =
         error instanceof Error ? error.message : "Erro ao fazer login";
-      <Alerta success={false} message={message} />;
+
+      setAlerta({
+        success: false,
+        message,
+      });
     } finally {
       setSubmitting(false);
     }
@@ -35,6 +43,14 @@ export default function LoginPage() {
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-violet-700">Login</h1>
         </div>
+
+        {alerta && (
+          <Alerta
+            success={alerta.success}
+            message={alerta.message}
+            onClose={() => setAlerta(null)}
+          />
+        )}
 
         <form
           onSubmit={handleSubmit}

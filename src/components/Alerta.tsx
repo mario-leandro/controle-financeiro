@@ -7,23 +7,19 @@ export default function Alerta({
   message: string;
   onClose?: () => void;
 }) {
-  let successColor;
-
-  if (success) {
-    successColor = "bg-green-50";
-  } else {
-    successColor = "bg-red-500";
-  }
+  const colors = success ? "green" : "red";
 
   return (
     <div
-      className={`fixed w-2 top-4 right-4 ${successColor} text-white p-4 rounded shadow-lg z-10`}
+      className={`fixed bottom-5 right-4 flex flex-col gap-3 z-50 min-w-[250px] max-w-[350px]
+        bg-${colors}-500 text-white
+        px-4 py-3 rounded-lg shadow-lg
+        flex items-start gap-3
+        animate-[fadeIn_0.3s_ease]`}
     >
-      <p>{message}</p>
-      <button
-        onClick={onClose}
-        className={`mt-2 bg-white ${successColor} px-3 py-1 rounded hover:bg-gray-200 transition`}
-      >
+      <p className="flex-1 text-sm font-medium">{message}</p>
+
+      <button onClick={onClose} className="ml-2 text-white/70 hover:text-white">
         Fechar
       </button>
     </div>

@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import Alerta from "@/components/Alerta";
-import { exit } from "process";
 
 export default function CadastroPage() {
   const router = useRouter();
@@ -15,12 +14,19 @@ export default function CadastroPage() {
   const [senha, setSenha] = useState("");
   const [confirmaSenha, setConfirmaSenha] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [alerta, setAlerta] = useState<{
+    success: boolean;
+    message: string;
+  } | null>(null);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     if (senha !== confirmaSenha) {
-      <Alerta success={false} message="As senhas não coincidem." />;
+      setAlerta({
+        success: false,
+        message: "As senhas não conferem",
+      });
       return;
     }
 
@@ -28,15 +34,20 @@ export default function CadastroPage() {
 
     try {
       await signUp(nome, email, senha);
-      <Alerta
-        success={true}
-        message="Conta criada com sucesso. Verifique seu email se a confirmação estiver ativada."
-      />;
+      setAlerta({
+        success: true,
+        message:
+          "Conta criada com sucesso. Verifique seu email se a confirmação estiver ativada.",
+      });
       router.push("/auth/login");
     } catch (error) {
       const message =
-        error instanceof Error ? error.message : "Erro ao criar conta";
-      <Alerta success={false} message={message} />;
+        error instanceof Error ? error.message : "Erro ao fazer login";
+
+      setAlerta({
+        success: false,
+        message,
+      });
     } finally {
       setSubmitting(false);
     }
@@ -48,6 +59,14 @@ export default function CadastroPage() {
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-violet-700">Cadastre-se</h1>
         </div>
+
+        {alerta && (
+          <Alerta
+            success={alerta.success}
+            message={alerta.message}
+            onClose={() => setAlerta(null)}
+          />
+        )}
 
         <form
           onSubmit={handleSubmit}
