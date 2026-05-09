@@ -26,11 +26,12 @@ import { useAuth } from "@/context/AuthContext";
 
 export default function NavegacaoUsuario() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { user, profile, signOut } = useAuth();
+  const { user, signOut } = useAuth();
   const router = useRouter();
 
-  const nome = profile?.nome || user?.email?.split("@")[0] || "Usuário";
-  const fotoUsuario = profile?.avatar_url;
+  // const nome = user?.email?.split("@")[0] || "Usuário";
+  const nome = user?.nome || "Usuário";
+  const fotoUsuario = user?.avatar_url;
   const email = user?.email || "";
 
   const navArray = [

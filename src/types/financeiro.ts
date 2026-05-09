@@ -1,7 +1,7 @@
 // Interfaces
 export interface Account {
   id: string;
-  user_id: string;
+  user_id: number;
   nome: string;
   tipo: TipoConta;
   saldo_inicial: number;

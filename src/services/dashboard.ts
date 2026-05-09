@@ -2,25 +2,21 @@ import { sendRequest } from "@/services/api";
 import { Account, Transaction } from "@/types/financeiro";
 
 export async function getAccounts() {
-  const response = await sendRequest([
-    {
-      type: "accounts",
-      action: "list",
-    },
-  ]);
+  const response = await sendRequest({
+    type: "accounts",
+    action: "list",
+  });
 
-  return response.data.data;
+  return Array.isArray(response.data) ? response.data : [];
 }
 
 export async function getTransactions() {
-  const response = await sendRequest([
-    {
-      type: "transactions",
-      action: "list",
-    },
-  ]);
+  const response = await sendRequest({
+    type: "transactions",
+    action: "list",
+  });
 
-  return response.data.data;
+  return Array.isArray(response.data) ? response.data : [];
 }
 
 export function calcularSaldoTotal(

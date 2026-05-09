@@ -4,9 +4,11 @@ const arrUrls = [
   process.env.NEXT_PUBLIC_API_URL_THREE,
 ];
 
-export async function sendRequest(
-  payload: Array<{ type: string; action: string; data?: any }>,
-) {
+export async function sendRequest(payload: {
+  type: string;
+  action: string;
+  data?: any;
+}) {
   const response = await fetch(`${arrUrls[0]}`, {
     method: "POST",
     headers: {

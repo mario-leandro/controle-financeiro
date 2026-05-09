@@ -7,14 +7,12 @@ import {
 } from "@/types/financeiro";
 
 export async function getAccounts() {
-  const response = await sendRequest([
-    {
-      type: "accounts",
-      action: "list",
-    },
-  ]);
+  const response = await sendRequest({
+    type: "accounts",
+    action: "list",
+  });
 
-  return response.data.data;
+  return response.data;
 }
 
 export async function criarConta({
@@ -23,32 +21,28 @@ export async function criarConta({
   tipo,
   saldo_inicial = 0,
 }: Account) {
-  const response = await sendRequest([
-    {
-      type: "accounts",
-      action: "create",
-      data: {
-        user_id: user_id,
-        nome,
-        tipo,
-        saldo_inicial: saldo_inicial || 0,
-      },
+  const response = await sendRequest({
+    type: "accounts",
+    action: "create",
+    data: {
+      user_id: user_id,
+      nome,
+      tipo,
+      saldo_inicial: saldo_inicial || 0,
     },
-  ]);
+  });
 
-  return response.data.data;
+  return response.data;
 }
 
 export async function getCategories(tipo: TipoTransacao) {
-  const response = await sendRequest([
-    {
-      type: "categories",
-      action: "list",
-      data: { tipo },
-    },
-  ]);
+  const response = await sendRequest({
+    type: "categories",
+    action: "list",
+    data: { tipo },
+  });
 
-  return response.data.data;
+  return response.data;
 }
 
 export async function criarCategoria({
@@ -58,32 +52,28 @@ export async function criarCategoria({
   cor,
   icone,
 }: Category) {
-  const response = await sendRequest([
-    {
-      type: "categories",
-      action: "create",
-      data: {
-        user_id: user_id,
-        nome,
-        tipo,
-        cor: cor || null,
-        icone: icone || null,
-      },
+  const response = await sendRequest({
+    type: "categories",
+    action: "create",
+    data: {
+      user_id: user_id,
+      nome,
+      tipo,
+      cor: cor || null,
+      icone: icone || null,
     },
-  ]);
+  });
 
-  return response.data.data;
+  return response.data;
 }
 
 export async function getTransactions() {
-  const response = await sendRequest([
-    {
-      type: "transactions",
-      action: "list",
-    },
-  ]);
+  const response = await sendRequest({
+    type: "transactions",
+    action: "list",
+  });
 
-  return response.data.data;
+  return response.data;
 }
 
 export async function criarTransacao({
@@ -96,22 +86,20 @@ export async function criarTransacao({
   data_transacao,
   observacao,
 }: CriarTransacaoParams) {
-  const response = await sendRequest([
-    {
-      type: "transactions",
-      action: "create",
-      data: {
-        user_id: user_id,
-        account_id: account_id,
-        category_id: category_id,
-        tipo,
-        descricao,
-        valor,
-        data_transacao: data_transacao,
-        observacao: observacao || null,
-      },
+  const response = await sendRequest({
+    type: "transactions",
+    action: "create",
+    data: {
+      user_id: user_id,
+      account_id: account_id,
+      category_id: category_id,
+      tipo,
+      descricao,
+      valor,
+      data_transacao: data_transacao,
+      observacao: observacao || null,
     },
-  ]);
+  });
 
-  return response.data.data;
+  return response.data;
 }

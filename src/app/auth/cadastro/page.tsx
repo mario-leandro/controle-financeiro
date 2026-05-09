@@ -42,7 +42,7 @@ export default function CadastroPage() {
       router.push("/auth/login");
     } catch (error) {
       const message =
-        error instanceof Error ? error.message : "Erro ao fazer login";
+        error instanceof Error ? error.message : "Erro ao fazer cadastro";
 
       setAlerta({
         success: false,

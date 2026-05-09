@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import {
   getAccounts,
-  getRecentTransactions,
+  getTransactions,
   calcularSaldoTotal,
   calcularSaldoPorConta,
 } from "@/services/dashboard";
@@ -47,7 +47,7 @@ export default function Main() {
       console.log("contas carregadas");
 
       console.log("buscando transações");
-      const transactionsData = await withTimeout(getRecentTransactions());
+      const transactionsData = await withTimeout(getTransactions());
       console.log("transações carregadas");
 
       setAccounts(accountsData);

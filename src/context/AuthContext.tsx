@@ -26,43 +26,54 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const usuarioSalvo = localStorage.getItem("user");
 
-    if (usuarioSalvo) {
-      setUser(JSON.parse(usuarioSalvo));
+    if (usuarioSalvo && usuarioSalvo !== "undefined") {
+      try {
+        setUser(JSON.parse(usuarioSalvo));
+      } catch {
+        localStorage.removeItem("user");
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
+        setUser(null);
+      }
     }
 
     setLoading(false);
   }, []);
 
   async function signIn(email: string, senha: string) {
-    const response = await sendRequest([
-      {
-        type: "auth",
-        action: "login",
-        data: { email, senha },
-      },
-    ]);
+    const response = await sendRequest({
+      type: "auth",
+      action: "login",
+      data: { email, senha },
+    });
 
-    localStorage.setItem("access_token", response.data.access_token);
-    localStorage.setItem("refresh_token", response.data.refresh_token);
-    localStorage.setItem("user", JSON.stringify(response.data.user));
+    if (!response.success) {
+      throw new Error(response.message || "Erro ao fazer login");
+    }
 
-    setUser(response.data.user);
+    if (!response.access_token || !response.usuario) {
+      throw new Error("Resposta de login inválida");
+    }
+
+    localStorage.setItem("access_token", response.access_token);
+    localStorage.setItem("refresh_token", response.refresh_token ?? "");
+    localStorage.setItem("user", JSON.stringify(response.usuario));
+
+    setUser(response.usuario);
   }
 
   async function signUp(nome: string, email: string, senha: string) {
-    const response = await sendRequest([
-      {
-        type: "auth",
-        action: "register",
-        data: { nome, email, senha },
-      },
-    ]);
+    const response = await sendRequest({
+      type: "auth",
+      action: "register",
+      data: { nome, email, senha },
+    });
 
-    localStorage.setItem("access_token", response.data.access_token);
-    localStorage.setItem("refresh_token", response.data.refresh_token);
-    localStorage.setItem("user", JSON.stringify(response.data.user));
+    if (!response.success) {
+      throw new Error(response.message || "Erro ao criar conta");
+    }
 
-    setUser(response.data.user);
+    setUser(response.data.usuario);
   }
 
   function signOut() {

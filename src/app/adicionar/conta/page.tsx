@@ -48,10 +48,10 @@ export default function AdicionarConta() {
       setSalvando(true);
 
       await criarConta({
-        userId: user.id,
+        user_id: user.id,
         nome: nome.trim(),
         tipo: tipoConta,
-        saldoInicial: saldoInicial ? Number(saldoInicial) : 0,
+        saldo_inicial: saldo_inicial ? Number(saldo_inicial) : 0,
       });
 
       alert("Conta adicionada com sucesso!");
