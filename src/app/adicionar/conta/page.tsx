@@ -51,7 +51,7 @@ export default function AdicionarConta() {
         user_id: user.id,
         nome: nome.trim(),
         tipo: tipoConta,
-        saldo_inicial: saldo_inicial ? Number(saldo_inicial) : 0,
+        saldo_inicial: saldoInicial ? Number(saldoInicial) : 0,
       });
 
       alert("Conta adicionada com sucesso!");

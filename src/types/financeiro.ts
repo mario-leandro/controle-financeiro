@@ -1,15 +1,15 @@
 // Interfaces
 export interface Account {
-  id: string;
+  id?: string;
   user_id: number;
   nome: string;
   tipo: TipoConta;
   saldo_inicial: number;
-  limite_total: number;
-  dia_fechamento: number;
-  dia_vencimento: number;
-  ativa: boolean;
-  created_at: string;
+  limite_total?: number;
+  dia_fechamento?: number;
+  dia_vencimento?: number;
+  ativa?: boolean;
+  created_at?: string;
 }
 
 export interface AccountWithBalance extends Account {
@@ -17,7 +17,7 @@ export interface AccountWithBalance extends Account {
 }
 
 export interface Category {
-  id: string;
+  id?: string;
   user_id: string;
   nome: string;
   tipo: TipoTransacao;

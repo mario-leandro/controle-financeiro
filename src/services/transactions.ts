@@ -21,18 +21,23 @@ export async function criarConta({
   tipo,
   saldo_inicial = 0,
 }: Account) {
-  const response = await sendRequest({
-    type: "accounts",
-    action: "create",
-    data: {
-      user_id: user_id,
-      nome,
-      tipo,
-      saldo_inicial: saldo_inicial || 0,
-    },
-  });
+  try {
+    const response = await sendRequest({
+      type: "accounts",
+      action: "create",
+      data: {
+        user_id: user_id,
+        nome,
+        tipo,
+        saldo_inicial: saldo_inicial || 0,
+      },
+    });
 
-  return response.data;
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao criar conta:", error);
+    throw error;
+  }
 }
 
 export async function getCategories(tipo: TipoTransacao) {
