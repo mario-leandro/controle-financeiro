@@ -58,7 +58,7 @@ export default function AdicionarConta() {
       router.push("/dashboard");
     } catch (error) {
       console.error(error);
-      alert("Erro ao adicionar conta.");
+      alert("Erro ao adicionar conta. " + error);
     } finally {
       setSalvando(false);
     }

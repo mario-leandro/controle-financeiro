@@ -5,14 +5,12 @@ import Image from "next/image";
 import { useAuth } from "@/context/AuthContext";
 import { Camera, LogOut, Save, User } from "lucide-react";
 import { useState } from "react";
-import { uploadAvatar, updateAvatar } from "@/services/uploadAvatar";
 import { createClient } from "@/lib/supabase/client";
 
 export default function Configuracoes() {
-  const { user, profile, signOut, refreshProfile } = useAuth();
+  const { user } = useAuth();
   const supabase = createClient();
-
-  const [nome, setNome] = useState(profile?.nome || "");
+  const [nome, setNome] = useState("");
   const [loading, setLoading] = useState(false);
 
   const email = user?.email || "";

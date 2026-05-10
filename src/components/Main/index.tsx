@@ -48,6 +48,7 @@ export default function Main() {
 
       console.log("buscando transações");
       const transactionsData = await withTimeout(getTransactions());
+      console.log(transactionsData);
       console.log("transações carregadas");
 
       setAccounts(accountsData);

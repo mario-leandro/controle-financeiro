@@ -10,9 +10,10 @@ export async function getAccounts() {
   const response = await sendRequest({
     type: "accounts",
     action: "list",
+    data: {},
   });
 
-  return response.data;
+  return Array.isArray(response.data) ? response.data : [];
 }
 
 export async function criarConta({
@@ -21,23 +22,18 @@ export async function criarConta({
   tipo,
   saldo_inicial = 0,
 }: Account) {
-  try {
-    const response = await sendRequest({
-      type: "accounts",
-      action: "create",
-      data: {
-        user_id: user_id,
-        nome,
-        tipo,
-        saldo_inicial: saldo_inicial || 0,
-      },
-    });
+  const response = await sendRequest({
+    type: "accounts",
+    action: "create",
+    data: {
+      user_id: user_id,
+      nome,
+      tipo,
+      saldo_inicial: saldo_inicial || 0,
+    },
+  });
 
-    return response.data;
-  } catch (error) {
-    console.error("Erro ao criar conta:", error);
-    throw error;
-  }
+  return Array.isArray(response.data) ? response.data : [];
 }
 
 export async function getCategories(tipo: TipoTransacao) {
@@ -47,7 +43,7 @@ export async function getCategories(tipo: TipoTransacao) {
     data: { tipo },
   });
 
-  return response.data;
+  return Array.isArray(response.data) ? response.data : [];
 }
 
 export async function criarCategoria({
@@ -69,7 +65,7 @@ export async function criarCategoria({
     },
   });
 
-  return response.data;
+  return Array.isArray(response.data) ? response.data : [];
 }
 
 export async function getTransactions() {
@@ -78,7 +74,7 @@ export async function getTransactions() {
     action: "list",
   });
 
-  return response.data;
+  return Array.isArray(response.data) ? response.data : [];
 }
 
 export async function criarTransacao({
@@ -106,5 +102,5 @@ export async function criarTransacao({
     },
   });
 
-  return response.data;
+  return Array.isArray(response.data) ? response.data : [];
 }

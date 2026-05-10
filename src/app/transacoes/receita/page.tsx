@@ -104,7 +104,7 @@ export default function AddGanho() {
         }
 
         const categoriaCriada = await criarCategoria({
-          userId: user.id,
+          user_id: user.id,
           nome: novaCategoria.trim(),
           tipo,
         });
@@ -121,7 +121,7 @@ export default function AddGanho() {
         }
 
         const contaCriada = await criarConta({
-          userId: user.id,
+          user_id: user.id,
           nome: novaConta.trim(),
         });
 
@@ -129,9 +129,9 @@ export default function AddGanho() {
       }
 
       await criarTransacao({
-        userId: user.id,
-        accountId,
-        categoryId,
+        user_id: user.id,
+        account_id: accountId,
+        category_id: categoryId,
         tipo,
         descricao,
         valor: Number(valor),
