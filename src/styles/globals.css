@@ -43,7 +43,8 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-html, body {
+html,
+body {
   background: #ddd6ff;
 }
 
@@ -123,4 +124,38 @@ html, body {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.btn-animated {
+  background-color: #60a5fa; /* azul base */
+}
+
+.btn-animated::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: #1d4ed8; /* azul hover */
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+  z-index: 0;
+}
+
+.btn-animated:hover::before {
+  transform: scaleX(1);
+}
+
+.btn-animated:active {
+  transform: scale(0.98);
 }
