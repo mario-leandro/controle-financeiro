@@ -137,15 +137,15 @@ body {
   }
 }
 
-.btn-animated {
-  background-color: #60a5fa; /* azul base */
+/* .btn-animated {
+  background-color: #60a5fa;
 }
 
 .btn-animated::before {
   content: "";
   position: absolute;
   inset: 0;
-  background-color: #1d4ed8; /* azul hover */
+  background-color: #1d4ed8;
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.4s ease;
@@ -158,4 +158,4 @@ body {
 
 .btn-animated:active {
   transform: scale(0.98);
-}
+} */

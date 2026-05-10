@@ -7,12 +7,12 @@ export default function Alerta({
   message: string;
   onClose?: () => void;
 }) {
-  const colors = success ? "green" : "red";
+  const colors = success ? "bg-green-500" : "bg-red-500";
 
   return (
     <div
       className={`fixed bottom-5 right-4 flex flex-col gap-3 z-50 min-w-[250px] max-w-[350px]
-        bg-${colors}-500 text-white
+        ${colors} text-white
         px-4 py-3 rounded-lg shadow-lg
         flex items-start gap-3
         animate-[fadeIn_0.3s_ease]`}

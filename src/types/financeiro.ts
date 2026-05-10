@@ -18,7 +18,7 @@ export interface AccountWithBalance extends Account {
 
 export interface Category {
   id?: string;
-  user_id: string;
+  user_id: number;
   nome: string;
   tipo: TipoTransacao;
   cor: string | null;
@@ -27,8 +27,8 @@ export interface Category {
 }
 
 export interface Transaction {
-  id: string;
-  user_id: string;
+  id?: string;
+  user_id: number;
   account_id: string;
   category_id: string | null;
   tipo: TipoTransacao;
@@ -44,7 +44,7 @@ export interface Transaction {
   } | null;
 }
 export interface CriarTransacaoParams {
-  user_id: string;
+  user_id: number;
   account_id: string;
   category_id: string | null;
   tipo: TipoTransacao;

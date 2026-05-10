@@ -24,20 +24,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const usuarioSalvo = localStorage.getItem("user");
-
-    if (usuarioSalvo && usuarioSalvo !== "undefined") {
+    async function loadUser() {
       try {
-        setUser(JSON.parse(usuarioSalvo));
+        const token = localStorage.getItem("access_token");
+
+        if (!token) {
+          setLoading(false);
+          return;
+        }
+
+        const usuario = await getMe();
+
+        localStorage.setItem("user", JSON.stringify(usuario));
+        setUser(usuario);
       } catch {
-        localStorage.removeItem("user");
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
+        localStorage.removeItem("user");
         setUser(null);
+      } finally {
+        setLoading(false);
       }
     }
 
-    setLoading(false);
+    loadUser();
   }, []);
 
   async function signIn(email: string, senha: string) {
@@ -48,18 +58,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     });
 
     if (!response.success) {
-      throw new Error(response.message || "Erro ao fazer login");
-    }
-
-    if (!response.access_token || !response.usuario) {
-      throw new Error("Resposta de login inválida");
+      throw new Error(
+        response.message || response.error || "Erro ao fazer login",
+      );
     }
 
     localStorage.setItem("access_token", response.access_token);
-    localStorage.setItem("refresh_token", response.refresh_token ?? "");
-    localStorage.setItem("user", JSON.stringify(response.usuario));
+    localStorage.setItem("refresh_token", response.refresh_token);
+    localStorage.setItem("user", JSON.stringify(response.data.user));
 
-    setUser(response.usuario);
+    setUser(response.data.user);
   }
 
   async function signUp(nome: string, email: string, senha: string) {
@@ -70,10 +78,28 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     });
 
     if (!response.success) {
-      throw new Error(response.message || "Erro ao criar conta");
+      throw new Error(
+        response.message || response.error || "Erro ao criar conta",
+      );
     }
 
-    setUser(response.data.usuario);
+    setUser(response.data.user);
+  }
+
+  async function getMe() {
+    const response = await sendRequest({
+      type: "auth",
+      action: "me",
+      data: {},
+    });
+
+    if (!response.success) {
+      throw new Error(
+        response.message || response.error || "Erro ao buscar usuário",
+      );
+    }
+
+    return response.data.user;
   }
 
   function signOut() {

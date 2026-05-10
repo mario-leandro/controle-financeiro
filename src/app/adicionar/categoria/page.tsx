@@ -40,7 +40,7 @@ export default function AdicionarCategoria() {
       setSalvando(true);
 
       await criarCategoria({
-        userId: user.id,
+        user_id: user.id,
         nome: nome.trim(),
         tipo,
         cor,
