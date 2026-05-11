@@ -90,7 +90,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const response = await sendRequest({
       type: "auth",
       action: "me",
-      data: {},
+      data: {
+        usuario_id: user?.id,
+      },
     });
 
     if (!response.success) {
