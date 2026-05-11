@@ -13,17 +13,13 @@ type Payload = {
 export async function sendRequest(payload: Payload, retry = true) {
   const token = localStorage.getItem("access_token");
 
-  if (!token) {
-    throw new Error("Usuário não autenticado.");
-  }
-
-  const response = await fetch(`${arrUrls[0]}`, {
+  let response = await fetch(`${arrUrls[0]}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
-    body: payload ? JSON.stringify(payload) : undefined,
+    body: JSON.stringify(payload),
   });
 
   let result = await response.json();

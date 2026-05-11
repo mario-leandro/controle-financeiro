@@ -14,7 +14,8 @@ type AuthContextType = {
   loading: boolean;
   signIn: (email: string, senha: string) => Promise<void>;
   signUp: (nome: string, email: string, senha: string) => Promise<void>;
-  signOut: () => void;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
+  signOut: () => Promise<void> | void;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -65,9 +66,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     localStorage.setItem("access_token", response.access_token);
     localStorage.setItem("refresh_token", response.refresh_token);
-    localStorage.setItem("user", JSON.stringify(response.data.user));
+    localStorage.setItem("user", JSON.stringify(response.usuario));
 
-    setUser(response.data.user);
+    setUser(response.usuario);
   }
 
   async function signUp(nome: string, email: string, senha: string) {
@@ -83,7 +84,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       );
     }
 
-    setUser(response.data.user);
+    setUser(response.usuario);
   }
 
   async function getMe() {
@@ -101,7 +102,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       );
     }
 
-    return response.data.user;
+    return response.usuario;
   }
 
   function signOut() {
@@ -112,7 +113,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, signIn, signUp, signOut }}>
+    <AuthContext.Provider
+      value={{ user, loading, setUser, signIn, signUp, signOut }}
+    >
       {children}
     </AuthContext.Provider>
   );

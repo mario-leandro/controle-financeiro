@@ -3,33 +3,53 @@
 import NavegacaoUsuario from "@/components/NavegacaoUsuario";
 import Image from "next/image";
 import { useAuth } from "@/context/AuthContext";
-import { Camera, LogOut, Save, User } from "lucide-react";
-import { useState } from "react";
-import { createClient } from "@/lib/supabase/client";
+import { LogOut, Save, User } from "lucide-react";
+import { useEffect, useState } from "react";
+import { sendRequest } from "@/services/api";
+import { useRouter } from "next/navigation";
 
 export default function Configuracoes() {
-  const { user } = useAuth();
-  const supabase = createClient();
+  const { user, setUser, signOut } = useAuth();
+  const router = useRouter();
+
   const [nome, setNome] = useState("");
+  const [fotoUrl, setFotoUrl] = useState("");
   const [loading, setLoading] = useState(false);
 
   const email = user?.email || "";
-  const fotoUsuario = profile?.avatar_url;
+
+  useEffect(() => {
+    if (user) {
+      setNome(user.nome || "");
+      setFotoUrl(user.foto_url || "");
+    }
+  }, [user]);
 
   async function handleUpdateProfile() {
-    if (!user) return;
-
     try {
       setLoading(true);
 
-      const { error } = await supabase
-        .from("profiles")
-        .update({ nome })
-        .eq("id", user.id);
+      const response = await sendRequest({
+        type: "auth",
+        action: "update_profile",
+        data: {
+          nome,
+          foto_url: fotoUrl || null,
+        },
+      });
 
-      if (error) throw error;
+      if (!response.success) {
+        throw new Error(response.message || "Erro ao atualizar perfil");
+      }
 
-      await refreshProfile();
+      const updatedUser = {
+        ...user,
+        nome,
+        foto_url: fotoUrl || null,
+      };
+
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+      setUser(updatedUser);
 
       alert("Perfil atualizado com sucesso!");
     } catch (error) {
@@ -40,29 +60,9 @@ export default function Configuracoes() {
     }
   }
 
-  async function handleAvatarChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (!file || !user) return;
-
-    try {
-      setLoading(true);
-
-      const url = await uploadAvatar(file, user.id);
-      await updateAvatar(user.id, url);
-      await refreshProfile();
-
-      alert("Foto atualizada com sucesso!");
-    } catch (error) {
-      console.error(error);
-      alert("Erro ao atualizar foto.");
-    } finally {
-      setLoading(false);
-    }
-  }
-
   async function handleLogout() {
     await signOut();
-    window.location.href = "/auth/login";
+    router.push("/auth/login");
   }
 
   return (
@@ -83,34 +83,22 @@ export default function Configuracoes() {
 
             <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8">
               <section className="flex flex-col items-center justify-start bg-white rounded-2xl shadow-sm p-6">
-                <div className="relative">
-                  {fotoUsuario ? (
-                    <Image
-                      className="w-28 h-28 rounded-full object-cover border-4 border-violet-200"
-                      src={fotoUsuario}
-                      alt={`Foto do usuário ${nome || "Usuário"}`}
-                      width={112}
-                      height={112}
-                    />
-                  ) : (
-                    <div className="w-28 h-28 rounded-full bg-violet-100 flex items-center justify-center border-4 border-violet-200">
-                      <User className="w-14 h-14 text-violet-700" />
-                    </div>
-                  )}
-
-                  <label className="absolute bottom-0 right-0 w-10 h-10 rounded-full bg-violet-700 text-white flex items-center justify-center cursor-pointer hover:bg-violet-800 transition-colors">
-                    <Camera size={18} />
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleAvatarChange}
-                      className="hidden"
-                    />
-                  </label>
-                </div>
+                {fotoUrl ? (
+                  <Image
+                    className="w-28 h-28 rounded-full object-cover border-4 border-violet-200"
+                    src={fotoUrl}
+                    alt={`Foto do usuário ${nome || "Usuário"}`}
+                    width={112}
+                    height={112}
+                  />
+                ) : (
+                  <div className="w-28 h-28 rounded-full bg-violet-100 flex items-center justify-center border-4 border-violet-200">
+                    <User className="w-14 h-14 text-violet-700" />
+                  </div>
+                )}
 
                 <h2 className="mt-4 text-lg font-bold text-violet-900">
-                  {profile?.nome || user?.email?.split("@")[0] || "Usuário"}
+                  {nome || user?.email?.split("@")[0] || "Usuário"}
                 </h2>
 
                 <p className="text-sm text-violet-600 break-all text-center">
@@ -124,7 +112,7 @@ export default function Configuracoes() {
                     Dados pessoais
                   </h2>
                   <p className="text-sm text-violet-600">
-                    Atualize seu nome e visualize seu email de acesso.
+                    Atualize seu nome e sua foto de perfil.
                   </p>
                 </div>
 
@@ -137,6 +125,19 @@ export default function Configuracoes() {
                     onChange={(e) => setNome(e.target.value)}
                     type="text"
                     placeholder="Seu nome"
+                    className="w-full p-3 rounded-lg border border-violet-300 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                  />
+                </div>
+
+                <div className="flex flex-col gap-3">
+                  <label className="text-sm font-semibold text-violet-900">
+                    URL da foto
+                  </label>
+                  <input
+                    value={fotoUrl}
+                    onChange={(e) => setFotoUrl(e.target.value)}
+                    type="text"
+                    placeholder="https://..."
                     className="w-full p-3 rounded-lg border border-violet-300 focus:outline-none focus:ring-2 focus:ring-violet-500"
                   />
                 </div>
