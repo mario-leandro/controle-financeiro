@@ -4,7 +4,7 @@ export interface Account {
   user_id: number;
   nome: string;
   tipo: TipoConta;
-  saldo_inicial: number;
+  saldo_inicial?: number;
   limite_total?: number;
   dia_fechamento?: number;
   dia_vencimento?: number;
@@ -21,9 +21,9 @@ export interface Category {
   user_id: number;
   nome: string;
   tipo: TipoTransacao;
-  cor: string | null;
-  icone: string | null;
-  created_at: string;
+  cor?: string | null;
+  icone?: string | null;
+  created_at?: string;
 }
 
 export interface Transaction {
@@ -34,7 +34,7 @@ export interface Transaction {
   tipo: TipoTransacao;
   descricao: string;
   valor: number;
-  data_transacao: string;
+  data_transacao?: string;
   observacao: string | null;
   created_at: string;
   categories?: {
@@ -50,7 +50,7 @@ export interface CriarTransacaoParams {
   tipo: TipoTransacao;
   descricao: string;
   valor: number;
-  data_transacao: string;
+  data_transacao?: string;
   observacao?: string;
 }
 

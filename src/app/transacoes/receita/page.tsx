@@ -123,6 +123,7 @@ export default function AddGanho() {
         const contaCriada = await criarConta({
           user_id: user.id,
           nome: novaConta.trim(),
+          tipo: "conta_corrente",
         });
 
         accountId = contaCriada.id;
@@ -135,7 +136,7 @@ export default function AddGanho() {
         tipo,
         descricao,
         valor: Number(valor),
-        dataTransacao: data,
+        data_transacao: data,
         observacao,
       });
 
