@@ -49,7 +49,7 @@ export default function Configuracoes() {
       };
 
       localStorage.setItem("user", JSON.stringify(updatedUser));
-      setUser(updatedUser);
+      // setUser(updatedUser);
 
       alert("Perfil atualizado com sucesso!");
     } catch (error) {

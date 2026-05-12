@@ -29,34 +29,34 @@ export default function NavegacaoUsuario() {
 
   // const nome = user?.email?.split("@")[0] || "Usuário";
   const nome = user?.nome || "Usuário";
-  const fotoUsuario = user?.avatar_url;
+  const fotoUsuario = user?.foto_url || null;
   const email = user?.email || "";
 
   const navArray = [
     {
       nome: "Dashboard",
       link: "/dashboard",
-      icon: <LayoutDashboard />,
+      icon: <LayoutDashboard size={20} />,
     },
     {
       nome: "Relatórios",
       link: "/relatorios",
-      icon: <ClipboardMinus />,
+      icon: <ClipboardMinus size={20} />,
     },
     {
       nome: "Transações",
       link: "/transacoes",
-      icon: <ArrowLeftRight />,
+      icon: <ArrowLeftRight size={20} />,
     },
     {
       nome: "Metas",
       link: "/metas",
-      icon: <Goal />,
+      icon: <Goal size={20} />,
     },
     {
       nome: "Pagamentos",
       link: "/pagamentos",
-      icon: <CircleDollarSign />,
+      icon: <CircleDollarSign size={20} />,
     },
   ];
 
