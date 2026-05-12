@@ -1,9 +1,3 @@
-const arrUrls = [
-  process.env.NEXT_PUBLIC_API_URL,
-  process.env.NEXT_PUBLIC_API_URL_TWO,
-  process.env.NEXT_PUBLIC_API_URL_THREE,
-];
-
 type Payload = {
   type: string;
   action: string;
@@ -13,7 +7,7 @@ type Payload = {
 export async function sendRequest(payload: Payload, retry = true) {
   const token = localStorage.getItem("access_token");
 
-  let response = await fetch(`${arrUrls[0]}`, {
+  let response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -40,19 +34,15 @@ async function refreshAccessToken() {
 
   if (!refreshToken) return false;
 
-  const response = await fetch(`${arrUrls[0]}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
+  let payload = {
+    type: "auth",
+    action: "refresh_token",
+    data: {
+      refresh_token: refreshToken,
     },
-    body: JSON.stringify({
-      type: "auth",
-      action: "refresh_token",
-      data: {
-        refresh_token: refreshToken,
-      },
-    }),
-  });
+  };
+
+  const response = await sendRequest(payload, false);
 
   const result = await response.json();
 

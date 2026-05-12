@@ -84,7 +84,7 @@ export default function Configuracoes() {
             <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8">
               <section className="flex flex-col items-center justify-start bg-white rounded-2xl shadow-sm p-6">
                 {fotoUrl ? (
-                  <Image
+                  <img
                     className="w-28 h-28 rounded-full object-cover border-4 border-violet-200"
                     src={fotoUrl}
                     alt={`Foto do usuário ${nome || "Usuário"}`}
@@ -136,8 +136,7 @@ export default function Configuracoes() {
                   <input
                     value={fotoUrl}
                     onChange={(e) => setFotoUrl(e.target.value)}
-                    type="text"
-                    placeholder="https://..."
+                    type="file"
                     className="w-full p-3 rounded-lg border border-violet-300 focus:outline-none focus:ring-2 focus:ring-violet-500"
                   />
                 </div>

@@ -21,13 +21,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 
 export default function NavegacaoUsuario() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { user, signOut } = useAuth();
-  const router = useRouter();
+  const { user } = useAuth();
 
   // const nome = user?.email?.split("@")[0] || "Usuário";
   const nome = user?.nome || "Usuário";
