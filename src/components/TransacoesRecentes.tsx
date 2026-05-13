@@ -25,8 +25,6 @@ function getStatus(tipo: Transaction["tipo"]) {
       return "Recebido";
     case "despesa":
       return "Pago";
-    case "transferencia":
-      return "Transferência";
     default:
       return "Registrado";
   }
