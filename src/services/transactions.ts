@@ -21,19 +21,25 @@ export async function criarConta({
   nome,
   tipo,
   saldo_inicial = 0,
+  limite_total = 0,
+  dia_fechamento = 0,
+  dia_vencimento = 0,
 }: Account) {
   const response = await sendRequest({
     type: "accounts",
     action: "create",
     data: {
-      user_id: user_id,
+      user_id,
       nome,
       tipo,
-      saldo_inicial: saldo_inicial || 0,
+      saldo_inicial,
+      limite_total,
+      dia_fechamento,
+      dia_vencimento,
     },
   });
 
-  return Array.isArray(response.data) ? response.data : [];
+  return response.data;
 }
 
 export async function getCategories(tipo: TipoTransacao) {

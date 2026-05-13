@@ -13,6 +13,7 @@ export interface Account {
 }
 
 export interface AccountWithBalance extends Account {
+  tipo: TipoConta;
   saldo_atual: number;
 }
 
@@ -37,6 +38,7 @@ export interface Transaction {
   data_transacao?: string;
   observacao: string | null;
   created_at: string;
+  categoria_nome?: string | null;
   categories?: {
     nome: string;
     cor: string | null;

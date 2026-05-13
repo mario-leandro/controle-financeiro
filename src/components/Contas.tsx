@@ -20,40 +20,32 @@ export default function Contas({ accounts }: ContasProps) {
           <p className="text-gray-500">Nenhuma conta cadastrada.</p>
         ) : (
           <div className="flex flex-col gap-3">
-            {accounts.map((account) => (
-              <div
-                key={account.id}
-                className="flex items-center justify-between rounded-lg border p-3"
-              >
-                <div>
-                  <p className="font-semibold text-violet-900">
-                    {account.nome}
-                  </p>
-                  <p className="text-sm text-gray-500 capitalize">
-                    {account.tipo.replace("_", " ")}
-                  </p>
-                </div>
-
-                <span className="font-bold text-violet-700">
-                  <p>
-                    {Number(account.saldo_atual).toLocaleString("pt-BR", {
-                      style: "currency",
-                      currency: "BRL",
-                    })}
-                  </p>
-
-                  {account.tipo.replace("_", " ") === "cartao" && (
+            {accounts
+              .filter((account) => account.tipo !== "cartao")
+              .map((account) => (
+                <div
+                  key={account.id}
+                  className="flex items-center justify-between rounded-lg border p-3"
+                >
+                  <div>
+                    <p className="font-semibold text-violet-900">
+                      {account.nome}
+                    </p>
                     <p className="text-sm text-gray-500 capitalize">
-                      R${" "}
-                      {Number(account.limite_total).toLocaleString("pt-BR", {
+                      {account.tipo.replace("_", " ")}
+                    </p>
+                  </div>
+
+                  <span className="font-bold text-violet-700">
+                    <p>
+                      {Number(account.saldo_atual).toLocaleString("pt-BR", {
                         style: "currency",
                         currency: "BRL",
                       })}
                     </p>
-                  )}
-                </span>
-              </div>
-            ))}
+                  </span>
+                </div>
+              ))}
           </div>
         )}
       </div>

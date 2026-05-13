@@ -12,12 +12,59 @@ import {
 } from "@/components/ui/table";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
-// import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Transaction } from "@/types/financeiro";
+import { getTransactions } from "@/services/dashboard";
 
 export default function Transacoes() {
-  // const [isModalOpen, setIsModalOpen] = useState(false);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
   const { user, loading } = useAuth();
   const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push("/auth/login");
+    }
+
+    if (user) {
+      carregarTransacoes();
+    }
+  }, [loading, user, router]);
+
+  const carregarTransacoes = async () => {
+    try {
+      const data = await getTransactions(user!.id);
+      setTransactions(data);
+    } catch (error) {
+      console.error("Erro ao carregar transações:", error);
+    }
+  };
+
+  const transacoesEntrada = transactions.filter(
+    (transaction) => transaction.tipo === "receita",
+  );
+
+  const transacoesSaida = transactions.filter(
+    (transaction) => transaction.tipo === "despesa",
+  );
+
+  const totalEntradas = transacoesEntrada.reduce(
+    (acc, transaction) => acc + Number(transaction.valor),
+    0,
+  );
+
+  const totalSaidas = transacoesSaida.reduce(
+    (acc, transaction) => acc + Number(transaction.valor),
+    0,
+  );
+
+  const saldoFinal = totalEntradas - totalSaidas;
+
+  const formatCurrency = (valor: number) =>
+    valor.toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    });
 
   if (loading) {
     return (
@@ -32,61 +79,6 @@ export default function Transacoes() {
     return null;
   }
 
-  const transacoesArr = {
-    entrada: [
-      {
-        id: 1,
-        descricao: "Salário",
-        valor: 1516,
-        data: "2026-01-02",
-        categoria: "Salário",
-        tipo: "entrada",
-      },
-      {
-        id: 2,
-        descricao: "Freelance",
-        valor: 800,
-        data: "2026-01-15",
-        categoria: "Trabalho",
-        tipo: "entrada",
-      },
-      {
-        id: 3,
-        descricao: "Venda de itens",
-        valor: 200,
-        data: "2026-01-20",
-        categoria: "Vendas",
-        tipo: "entrada",
-      },
-    ],
-    saida: [
-      {
-        id: 1,
-        descricao: "Aluguel",
-        valor: 500,
-        data: "2026-01-05",
-        categoria: "Moradia",
-        tipo: "saida",
-      },
-      {
-        id: 2,
-        descricao: "Supermercado",
-        valor: 300,
-        data: "2026-01-10",
-        categoria: "Alimentação",
-        tipo: "saida",
-      },
-      {
-        id: 3,
-        descricao: "Transporte",
-        valor: 100,
-        data: "2026-01-12",
-        categoria: "Transporte",
-        tipo: "saida",
-      },
-    ],
-  };
-
   const toggleModal = () => {
     router.push("/transacoes/receita");
   };
@@ -100,27 +92,42 @@ export default function Transacoes() {
         <div className="w-full h-full flex flex-col gap-5">
           <div className="w-full min-h-44 h-auto bg-violet-50 p-5 rounded-lg shadow-lg">
             <div>
-              <p className="text-lg font-semibold text-violet-900">
+              <p className="text-lg font-semibold text-violet-900 mb-5">
                 Resumo Financeiro
               </p>
               <div className="w-full flex flex-row justify-start items-center gap-5">
-                <div className="w-1/4 flex flex-col justify-between items-start shadow-lg rounded-lg gap-3 p-5 bg-green-50">
+                <div className="w-1/4 flex flex-col justify-between items-start shadow-lg rounded-lg gap-3 p-5 bg-violet-200">
                   <p className="text-lg font-semibold text-green-900">
                     Total de Entradas
                   </p>
-                  <p className="text-2xl font-bold text-green-900">R$ 2.516</p>
+                  <p className="text-2xl font-bold text-green-900">
+                    {totalEntradas.toLocaleString("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    })}
+                  </p>
                 </div>
-                <div className="w-1/4 flex flex-col justify-between items-start shadow-lg rounded-lg gap-3 p-5 bg-red-50">
+                <div className="w-1/4 flex flex-col justify-between items-start shadow-lg rounded-lg gap-3 p-5 bg-violet-200">
                   <p className="text-lg font-semibold text-red-900">
                     Total de Saídas
                   </p>
-                  <p className="text-2xl font-bold text-red-900">R$ 900</p>
+                  <p className="text-2xl font-bold text-red-900">
+                    {totalSaidas.toLocaleString("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    })}
+                  </p>
                 </div>
-                <div className="w-1/4 flex flex-col justify-between items-start shadow-lg rounded-lg gap-3 p-5 bg-blue-50">
+                <div className="w-1/4 flex flex-col justify-between items-start shadow-lg rounded-lg gap-3 p-5 bg-violet-200">
                   <p className="text-lg font-semibold text-blue-900">
                     Saldo Final
                   </p>
-                  <p className="text-2xl font-bold text-blue-900">R$ 1.616</p>
+                  <p className="text-2xl font-bold text-blue-900">
+                    {saldoFinal.toLocaleString("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    })}
+                  </p>
                 </div>
               </div>
             </div>
@@ -148,22 +155,30 @@ export default function Transacoes() {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {transacoesArr.saida.map((transacao) => (
-                        <TableRow key={transacao.id}>
+                      {transacoesSaida.length === 0 ? (
+                        <TableRow>
                           <TableCell className="text-violet-900">
-                            {transacao.descricao}
-                          </TableCell>
-                          <TableCell className="text-violet-900">
-                            R${transacao.valor}
-                          </TableCell>
-                          <TableCell className="text-violet-900">
-                            {transacao.data}
-                          </TableCell>
-                          <TableCell className="text-violet-900">
-                            {transacao.categoria}
+                            Nenhuma transação encontrada
                           </TableCell>
                         </TableRow>
-                      ))}
+                      ) : (
+                        transacoesSaida.map((transaction) => (
+                          <TableRow key={transaction.id}>
+                            <TableCell className="text-violet-900">
+                              {transaction.descricao}
+                            </TableCell>
+                            <TableCell className="text-violet-900">
+                              {formatCurrency(transaction.valor)}
+                            </TableCell>
+                            <TableCell className="text-violet-900">
+                              {transaction.data_transacao}
+                            </TableCell>
+                            <TableCell className="text-violet-900">
+                              {transaction.categoria_nome}
+                            </TableCell>
+                          </TableRow>
+                        ))
+                      )}
                     </TableBody>
                   </Table>
                 </div>
@@ -188,22 +203,30 @@ export default function Transacoes() {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {transacoesArr.entrada.map((transacao) => (
-                        <TableRow key={transacao.id}>
+                      {transacoesEntrada.length === 0 ? (
+                        <TableRow>
                           <TableCell className="text-violet-900">
-                            {transacao.descricao}
-                          </TableCell>
-                          <TableCell className="text-violet-900">
-                            R${transacao.valor}
-                          </TableCell>
-                          <TableCell className="text-violet-900">
-                            {transacao.data}
-                          </TableCell>
-                          <TableCell className="text-violet-900">
-                            {transacao.categoria}
+                            Nenhuma transação encontrada
                           </TableCell>
                         </TableRow>
-                      ))}
+                      ) : (
+                        transacoesEntrada.map((transaction) => (
+                          <TableRow key={transaction.id}>
+                            <TableCell className="text-violet-900">
+                              {transaction.descricao}
+                            </TableCell>
+                            <TableCell className="text-violet-900">
+                              {formatCurrency(transaction.valor)}
+                            </TableCell>
+                            <TableCell className="text-violet-900">
+                              {transaction.data_transacao}
+                            </TableCell>
+                            <TableCell className="text-violet-900">
+                              {transaction.categoria_nome}
+                            </TableCell>
+                          </TableRow>
+                        ))
+                      )}
                     </TableBody>
                   </Table>
                 </div>

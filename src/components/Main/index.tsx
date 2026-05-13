@@ -43,11 +43,11 @@ export default function Main() {
       setDashboardLoading(true);
 
       // console.log("buscando contas");
-      const accountsData = await withTimeout(getAccounts());
+      const accountsData = await withTimeout(getAccounts(user.id));
       // console.log("contas carregadas");
 
       // console.log("buscando transações");
-      const transactionsData = await withTimeout(getTransactions());
+      const transactionsData = await withTimeout(getTransactions(user.id));
       console.log(transactionsData);
       // console.log("transações carregadas");
 

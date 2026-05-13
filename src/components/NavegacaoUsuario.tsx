@@ -38,26 +38,26 @@ export default function NavegacaoUsuario() {
       link: "/dashboard",
       icon: <LayoutDashboard size={20} />,
     },
-    {
-      nome: "Relatórios",
-      link: "/relatorios",
-      icon: <ClipboardMinus size={20} />,
-    },
+    // {
+    //   nome: "Relatórios",
+    //   link: "/relatorios",
+    //   icon: <ClipboardMinus size={20} />,
+    // },
     {
       nome: "Transações",
       link: "/transacoes",
       icon: <ArrowLeftRight size={20} />,
     },
-    {
-      nome: "Metas",
-      link: "/metas",
-      icon: <Goal size={20} />,
-    },
-    {
-      nome: "Pagamentos",
-      link: "/pagamentos",
-      icon: <CircleDollarSign size={20} />,
-    },
+    // {
+    //   nome: "Metas",
+    //   link: "/metas",
+    //   icon: <Goal size={20} />,
+    // },
+    // {
+    //   nome: "Pagamentos",
+    //   link: "/pagamentos",
+    //   icon: <CircleDollarSign size={20} />,
+    // },
   ];
 
   return (

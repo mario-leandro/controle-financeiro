@@ -1,19 +1,25 @@
 import { sendRequest } from "@/services/api";
 import { Account, Transaction } from "@/types/financeiro";
 
-export async function getAccounts() {
+export async function getAccounts(user_id: number) {
   const response = await sendRequest({
     type: "accounts",
     action: "list",
+    data: {
+      usuario_id: user_id,
+    },
   });
 
   return Array.isArray(response.data) ? response.data : [];
 }
 
-export async function getTransactions() {
+export async function getTransactions(user_id: number) {
   const response = await sendRequest({
     type: "transactions",
     action: "list",
+    data: {
+      usuario_id: user_id,
+    },
   });
 
   return Array.isArray(response.data) ? response.data : [];

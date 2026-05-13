@@ -37,7 +37,7 @@ export default function CartaoCard({ cartoes }: CartaoCardProps) {
                   </p>
                 </div>
 
-                <span className="font-bold text-violet-700">
+                <span className="font-bold text-violet-700 flex flex-col items-end justify-center">
                   <p>
                     {Number(cartao.saldo_atual).toLocaleString("pt-BR", {
                       style: "currency",
