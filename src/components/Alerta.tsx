@@ -22,7 +22,7 @@ export default function Alerta({
       {onClose && (
         <button
           onClick={onClose}
-          className="absolute top-1 right-1 text-white/70 hover:text-white cursor-pointer"
+          className="absolute top-2 right-2 text-white/70 hover:text-white cursor-pointer"
         >
           x
         </button>

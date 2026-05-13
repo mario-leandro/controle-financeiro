@@ -25,6 +25,10 @@ export default function AdicionarConta() {
   const [fechamentoCartao, setFechamentoCartao] = useState("");
   const [vencimentoCartao, setVencimentoCartao] = useState("");
   const [salvando, setSalvando] = useState(false);
+  const [alerta, setAlerta] = useState<{
+    success: boolean;
+    message: string;
+  } | null>(null);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -52,13 +56,27 @@ export default function AdicionarConta() {
         nome: nome.trim(),
         tipo: tipoConta,
         saldo_inicial: saldoInicial ? Number(saldoInicial) : 0,
+        limite_total: limiteTotal ? Number(limiteTotal) : 0,
+        dia_fechamento: fechamentoCartao ? Number(fechamentoCartao) : 0,
+        dia_vencimento: vencimentoCartao ? Number(vencimentoCartao) : 0,
       });
 
-      alert("Conta adicionada com sucesso!");
-      router.push("/dashboard");
+      setAlerta({
+        success: true,
+        message: "Conta adicionada com sucesso!",
+      });
+
+      setTimeout(() => {
+        router.push("/dashboard");
+      }, 2500);
     } catch (error) {
-      console.error(error);
-      alert("Erro ao adicionar conta. " + error);
+      const message =
+        error instanceof Error ? error.message : "Erro ao adicionar conta.";
+
+      setAlerta({
+        success: false,
+        message,
+      });
     } finally {
       setSalvando(false);
     }
@@ -78,6 +96,14 @@ export default function AdicionarConta() {
         <NavegacaoUsuario />
 
         <main className="w-full bg-violet-50 rounded-2xl shadow-lg p-5 md:p-8">
+          {alerta && (
+            <Alerta
+              success={alerta.success}
+              message={alerta.message}
+              onClose={() => setAlerta(null)}
+            />
+          )}
+
           <div className="mb-8">
             <h1 className="text-2xl md:text-3xl font-bold text-violet-900">
               Adicionar Conta

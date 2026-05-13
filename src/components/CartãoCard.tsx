@@ -21,12 +21,44 @@ export default function CartaoCard({ cartoes }: CartaoCardProps) {
           </p>
         </div>
 
-        <p className="text-lg lg:text-xl text-violet-700 font-semibold">
-          {totalCartao.toLocaleString("pt-BR", {
-            style: "currency",
-            currency: "BRL",
-          })}
-        </p>
+        {cartoes.length === 0 ? (
+          <p className="text-gray-500">Nenhuma conta cadastrada.</p>
+        ) : (
+          <div className="flex flex-col gap-3">
+            {cartoes.map((cartao) => (
+              <div
+                key={cartao.id}
+                className="flex items-center justify-between rounded-lg border p-3"
+              >
+                <div>
+                  <p className="font-semibold text-violet-900">{cartao.nome}</p>
+                  <p className="text-sm text-gray-500 capitalize">
+                    {cartao.tipo.replace("_", " ")}
+                  </p>
+                </div>
+
+                <span className="font-bold text-violet-700">
+                  <p>
+                    {Number(cartao.saldo_atual).toLocaleString("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    })}
+                  </p>
+
+                  {cartao.tipo.replace("_", " ") === "cartao" && (
+                    <p className="text-sm text-gray-500 capitalize">
+                      Limite:{" "}
+                      {Number(cartao.limite_total).toLocaleString("pt-BR", {
+                        style: "currency",
+                        currency: "BRL",
+                      })}
+                    </p>
+                  )}
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

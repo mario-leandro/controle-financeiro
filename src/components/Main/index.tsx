@@ -42,14 +42,14 @@ export default function Main() {
     try {
       setDashboardLoading(true);
 
-      console.log("buscando contas");
+      // console.log("buscando contas");
       const accountsData = await withTimeout(getAccounts());
-      console.log("contas carregadas");
+      // console.log("contas carregadas");
 
-      console.log("buscando transações");
+      // console.log("buscando transações");
       const transactionsData = await withTimeout(getTransactions());
       console.log(transactionsData);
-      console.log("transações carregadas");
+      // console.log("transações carregadas");
 
       setAccounts(accountsData);
       setTransactions(transactionsData);

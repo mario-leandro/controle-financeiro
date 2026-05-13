@@ -1,5 +1,6 @@
 "use client";
 
+import Alerta from "@/components/Alerta";
 import NavegacaoUsuario from "@/components/NavegacaoUsuario";
 import { useAuth } from "@/context/AuthContext";
 import { criarCategoria } from "@/services/transactions";
@@ -17,6 +18,10 @@ export default function AdicionarCategoria() {
   const [cor, setCor] = useState("#7c3aed");
   const [icone, setIcone] = useState("");
   const [salvando, setSalvando] = useState(false);
+  const [alerta, setAlerta] = useState<{
+    success: boolean;
+    message: string;
+  } | null>(null);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -47,11 +52,22 @@ export default function AdicionarCategoria() {
         icone: icone.trim() || null,
       });
 
-      alert("Categoria adicionada com sucesso!");
-      router.push("/dashboard");
+      setAlerta({
+        success: true,
+        message: "Categoria adicionada com sucesso!",
+      });
+
+      setTimeout(() => {
+        router.push("/dashboard");
+      }, 2500);
     } catch (error) {
-      console.error(error);
-      alert("Erro ao adicionar categoria.");
+      const message =
+        error instanceof Error ? error.message : "Erro ao adicionar categoria.";
+
+      setAlerta({
+        success: false,
+        message,
+      });
     } finally {
       setSalvando(false);
     }
@@ -71,6 +87,14 @@ export default function AdicionarCategoria() {
         <NavegacaoUsuario />
 
         <main className="w-full bg-violet-50 rounded-2xl shadow-lg p-5 md:p-8">
+          {alerta && (
+            <Alerta
+              success={alerta.success}
+              message={alerta.message}
+              onClose={() => setAlerta(null)}
+            />
+          )}
+
           <div className="mb-8">
             <h1 className="text-2xl md:text-3xl font-bold text-violet-900">
               Adicionar Categoria

@@ -11,6 +11,7 @@ import {
   getAccounts,
   getCategories,
 } from "@/services/transactions";
+import Alerta from "@/components/Alerta";
 
 type TipoTransacao = "receita" | "despesa";
 
@@ -45,6 +46,10 @@ export default function AddGanho() {
   const [tipo, setTipo] = useState<TipoTransacao>("receita");
   const [observacao, setObservacao] = useState("");
   const [loading, setLoading] = useState(false);
+  const [alerta, setAlerta] = useState<{
+    success: boolean;
+    message: string;
+  } | null>(null);
 
   useEffect(() => {
     async function loadInitialData() {
@@ -140,11 +145,22 @@ export default function AddGanho() {
         observacao,
       });
 
-      alert("Transação adicionada com sucesso!");
-      router.push("/dashboard");
+      setAlerta({
+        success: true,
+        message: "Transação adicionada com sucesso!",
+      });
+
+      setTimeout(() => {
+        router.push("/dashboard");
+      }, 2500);
     } catch (error) {
-      console.error(error);
-      alert("Erro ao adicionar transação.");
+      const message =
+        error instanceof Error ? error.message : "Erro ao adicionar transação.";
+
+      setAlerta({
+        success: false,
+        message,
+      });
     } finally {
       setLoading(false);
     }
@@ -167,6 +183,14 @@ export default function AddGanho() {
           onSubmit={handleSubmit}
           className="w-full h-full bg-violet-50 flex flex-col justify-start items-start gap-5 rounded-2xl p-5 shadow-lg overflow-auto"
         >
+          {alerta && (
+            <Alerta
+              success={alerta.success}
+              message={alerta.message}
+              onClose={() => setAlerta(null)}
+            />
+          )}
+
           <h1 className="text-lg md:text-2xl font-bold text-violet-900">
             Adicionar Nova Transação
           </h1>
