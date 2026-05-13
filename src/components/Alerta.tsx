@@ -19,9 +19,14 @@ export default function Alerta({
     >
       <p className="flex-1 text-sm font-medium">{message}</p>
 
-      <button onClick={onClose} className="ml-2 text-white/70 hover:text-white">
-        Fechar
-      </button>
+      {onClose && (
+        <button
+          onClick={onClose}
+          className="absolute top-1 right-1 text-white/70 hover:text-white cursor-pointer"
+        >
+          x
+        </button>
+      )}
     </div>
   );
 }

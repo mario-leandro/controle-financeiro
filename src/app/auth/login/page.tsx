@@ -23,7 +23,15 @@ export default function LoginPage() {
 
     try {
       await signIn(email, senha);
-      router.push("/dashboard");
+
+      setAlerta({
+        success: true,
+        message: "Login realizado com sucesso",
+      });
+
+      setTimeout(() => {
+        router.push("/dashboard");
+      }, 2500);
     } catch (error) {
       const message =
         error instanceof Error ? error.message : "Erro ao fazer login";

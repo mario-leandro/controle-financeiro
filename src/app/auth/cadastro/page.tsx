@@ -39,7 +39,10 @@ export default function CadastroPage() {
         message:
           "Conta criada com sucesso. Verifique seu email se a confirmação estiver ativada.",
       });
-      router.push("/auth/login");
+
+      setTimeout(() => {
+        router.push("/auth/login");
+      }, 2500);
     } catch (error) {
       const message =
         error instanceof Error ? error.message : "Erro ao fazer cadastro";
