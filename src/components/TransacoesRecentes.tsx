@@ -67,7 +67,7 @@ export default function TransacoesRecebidas({
                     Método
                   </TableHead>
                   <TableHead className="text-violet-950 text-xs sm:text-xs md:text-base font-semibold text-right">
-                    Quantia
+                    Valor
                   </TableHead>
                 </TableRow>
               </TableHeader>
@@ -87,7 +87,7 @@ export default function TransacoesRecebidas({
                       </TableCell>
 
                       <TableCell className="font-medium text-xs sm:text-xs md:text-base text-violet-900">
-                        {getMetodo(transaction)}
+                        {transaction.categoria_nome}
                       </TableCell>
 
                       <TableCell

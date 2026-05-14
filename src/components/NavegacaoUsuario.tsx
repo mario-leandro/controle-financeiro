@@ -62,13 +62,16 @@ export default function NavegacaoUsuario() {
 
   return (
     <>
-      {/* Botão de Menu Hamburger - Visível apenas no mobile */}
-      <button
-        onClick={() => setIsMenuOpen(!isMenuOpen)}
-        className="md:hidden fixed top-5 left-5 z-50 p-2 rounded-lg bg-violet-600 text-white hover:bg-violet-700 transition-colors"
-      >
-        {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-      </button>
+      {/* Adicionar Header */}
+      <div className="w-full h-full flex flex-row justify-between items-center px-5 py-10">
+        {/* Botão de Menu Hamburger - Visível apenas no mobile */}
+        <button
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          className="md:hidden fixed top-5 left-5 z-50 p-2 rounded-lg bg-violet-600 text-white hover:bg-violet-700 transition-colors"
+        >
+          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+      </div>
 
       {/* Overlay escuro quando menu está aberto - Mobile apenas */}
       {isMenuOpen && (
