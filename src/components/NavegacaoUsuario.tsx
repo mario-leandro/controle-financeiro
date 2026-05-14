@@ -62,9 +62,24 @@ export default function NavegacaoUsuario() {
 
   return (
     <>
-      {/* Adicionar Header */}
+      {/* Botão de Menu Hamburger - Visível apenas no mobile */}
+      {/* <button
+        onClick={() => setIsMenuOpen(!isMenuOpen)}
+        className="md:hidden fixed top-5 left-5 z-50 p-2 rounded-lg bg-violet-600 text-white hover:bg-violet-700 transition-colors"
+      >
+        {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+      </button> */}
+
+      {/* Overlay escuro quando menu está aberto - Mobile apenas */}
+      {/* {isMenuOpen && (
+        <div
+          className="md:hidden fixed inset-0 z-20"
+          onClick={() => setIsMenuOpen(false)}
+        />
+      )} */}
+
+      {/* Menu Sidebar */}
       <div className="w-full h-full flex flex-row justify-between items-center px-5 py-10">
-        {/* Botão de Menu Hamburger - Visível apenas no mobile */}
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           className="md:hidden fixed top-5 left-5 z-50 p-2 rounded-lg bg-violet-600 text-white hover:bg-violet-700 transition-colors"
@@ -73,15 +88,6 @@ export default function NavegacaoUsuario() {
         </button>
       </div>
 
-      {/* Overlay escuro quando menu está aberto - Mobile apenas */}
-      {isMenuOpen && (
-        <div
-          className="md:hidden fixed inset-0 z-20"
-          onClick={() => setIsMenuOpen(false)}
-        />
-      )}
-
-      {/* Menu Sidebar */}
       <div
         className={`fixed md:static md:w-80 h-full z-30 flex flex-col justify-between items-center rounded-2xl shadow-lg bg-violet-50 px-5 py-10 transition-all duration-300 ease-in-out ${
           isMenuOpen
