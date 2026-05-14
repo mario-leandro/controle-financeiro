@@ -27,17 +27,26 @@ export default function AdicionarCategoria() {
     e.preventDefault();
 
     if (!user) {
-      alert("Usuário não autenticado.");
+      setAlerta({
+        success: false,
+        message: "Usuário não autenticado.",
+      });
       return;
     }
 
     if (!nome.trim()) {
-      alert("Informe o nome da categoria.");
+      setAlerta({
+        success: false,
+        message: "Informe o nome da categoria.",
+      });
       return;
     }
 
     if (!tipo) {
-      alert("Selecione o tipo da categoria.");
+      setAlerta({
+        success: false,
+        message: "Selecione o tipo da categoria.",
+      });
       return;
     }
 

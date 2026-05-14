@@ -77,22 +77,34 @@ export default function AddGanho() {
     e.preventDefault();
 
     if (!user) {
-      alert("Usuário não autenticado.");
+      setAlerta({
+        success: false,
+        message: "Usuário não autenticado.",
+      });
       return;
     }
 
     if (!descricao || !valor || !data) {
-      alert("Preencha descrição, valor e data.");
+      setAlerta({
+        success: false,
+        message: "Preencha descrição, valor e data.",
+      });
       return;
     }
 
     if (!conta) {
-      alert("Selecione uma conta.");
+      setAlerta({
+        success: false,
+        message: "Selecione uma conta.",
+      });
       return;
     }
 
     if (!categoria) {
-      alert("Selecione uma categoria.");
+      setAlerta({
+        success: false,
+        message: "Selecione uma categoria.",
+      });
       return;
     }
 
@@ -104,7 +116,10 @@ export default function AddGanho() {
 
       if (categoria === "outros") {
         if (!novaCategoria.trim()) {
-          alert("Digite o nome da nova categoria.");
+          setAlerta({
+            success: false,
+            message: "Digite o nome da nova categoria.",
+          });
           return;
         }
 
@@ -121,7 +136,10 @@ export default function AddGanho() {
 
       if (conta === "outra") {
         if (!novaConta.trim()) {
-          alert("Digite o nome da nova conta.");
+          setAlerta({
+            success: false,
+            message: "Digite o nome da nova conta.",
+          });
           return;
         }
 

@@ -63,21 +63,22 @@ export async function criarCategoria({
     type: "categories",
     action: "create",
     data: {
-      user_id: user_id,
+      user_id,
       nome,
       tipo,
-      cor: cor || null,
-      icone: icone || null,
+      cor,
+      icone,
     },
   });
 
   return Array.isArray(response.data) ? response.data : [];
 }
 
-export async function getTransactions() {
+export async function getTransactions(user_id: number) {
   const response = await sendRequest({
     type: "transactions",
     action: "list",
+    data: { user_id },
   });
 
   return Array.isArray(response.data) ? response.data : [];
