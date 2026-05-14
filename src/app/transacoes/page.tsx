@@ -133,8 +133,8 @@ export default function Transacoes() {
             </div>
           </div>
 
-          <div className="flex flex-row flex-wrap md:flex-nowrap gap-5">
-            <div className="w-full flex flex-row justify-center items-center gap-5">
+          <div className="flex flex-col justify-between items-start md:flex-row gap-5">
+            <div className="w-full flex flex-row justify-center items-start gap-5">
               <div className="w-1/2 flex flex-col justify-between items-start shadow-lg rounded-lg gap-3 p-5 bg-violet-50 mr-5">
                 <p className="text-lg font-semibold text-violet-900">
                   Transações de Saída
@@ -147,11 +147,11 @@ export default function Transacoes() {
                         <TableHead className="text-violet-950">
                           Descrição
                         </TableHead>
-                        <TableHead className="text-violet-950">Valor</TableHead>
-                        <TableHead className="text-violet-950">Data</TableHead>
                         <TableHead className="text-violet-950">
                           Categoria
                         </TableHead>
+                        <TableHead className="text-violet-950">Data</TableHead>
+                        <TableHead className="text-violet-950">Valor</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -168,13 +168,13 @@ export default function Transacoes() {
                               {transaction.descricao}
                             </TableCell>
                             <TableCell className="text-violet-900">
-                              {formatCurrency(transaction.valor)}
+                              {transaction.categoria_nome}
                             </TableCell>
                             <TableCell className="text-violet-900">
                               {transaction.data_transacao}
                             </TableCell>
                             <TableCell className="text-violet-900">
-                              {transaction.categoria_nome}
+                              {formatCurrency(transaction.valor)}
                             </TableCell>
                           </TableRow>
                         ))
@@ -195,11 +195,11 @@ export default function Transacoes() {
                         <TableHead className="text-violet-950">
                           Descrição
                         </TableHead>
-                        <TableHead className="text-violet-950">Valor</TableHead>
-                        <TableHead className="text-violet-950">Data</TableHead>
                         <TableHead className="text-violet-950">
                           Categoria
                         </TableHead>
+                        <TableHead className="text-violet-950">Data</TableHead>
+                        <TableHead className="text-violet-950">Valor</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -216,13 +216,13 @@ export default function Transacoes() {
                               {transaction.descricao}
                             </TableCell>
                             <TableCell className="text-violet-900">
-                              {formatCurrency(transaction.valor)}
+                              {transaction.categoria_nome}
                             </TableCell>
                             <TableCell className="text-violet-900">
                               {transaction.data_transacao}
                             </TableCell>
                             <TableCell className="text-violet-900">
-                              {transaction.categoria_nome}
+                              {formatCurrency(transaction.valor)}
                             </TableCell>
                           </TableRow>
                         ))
