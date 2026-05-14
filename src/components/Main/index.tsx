@@ -112,8 +112,9 @@ export default function Main() {
         <NavegacaoUsuario />
 
         <div className="w-full h-full flex flex-col gap-5">
-          <div className="flex flex-col gap-5">
-            <SaldoCard saldo={saldoTotal} />
+          <SaldoCard saldo={saldoTotal} />
+
+          <div className="flex flex-col lg:flex-row gap-5">
             <CartaoCard cartoes={cartoes} />
             <Contas accounts={contasComSaldo} />
           </div>
