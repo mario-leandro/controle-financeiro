@@ -25,30 +25,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    async function loadUser() {
-      try {
-        const token = localStorage.getItem("access_token");
+  async function loadUser() {
+    const token = localStorage.getItem("access_token");
 
-        if (!token) {
-          setLoading(false);
-          return;
-        }
-
-        const usuario = await getMe();
-
-        localStorage.setItem("user", JSON.stringify(usuario));
-        setUser(usuario);
-      } catch {
-        localStorage.removeItem("access_token");
-        localStorage.removeItem("refresh_token");
-        localStorage.removeItem("user");
-        setUser(null);
-      } finally {
-        setLoading(false);
-      }
+    if (!token) {
+      setLoading(false);
+      return;
     }
 
+    try {
+      const usuario = await getMe();
+
+      localStorage.setItem("user", JSON.stringify(usuario));
+      setUser(usuario);
+    } catch {
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("refresh_token");
+      localStorage.removeItem("user");
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
     loadUser();
   }, []);
 
@@ -65,11 +65,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       );
     }
 
-    localStorage.setItem("access_token", response.access_token);
-    localStorage.setItem("refresh_token", response.refresh_token);
-    localStorage.setItem("user", JSON.stringify(response.usuario));
+    const accessToken = response.access_token ?? response.data?.access_token;
+    const refreshToken = response.refresh_token ?? response.data?.refresh_token;
+    const usuario =
+      response.usuario ?? response.data?.user ?? response.data?.usuario;
 
-    setUser(response.usuario);
+    if (!accessToken || !refreshToken || !usuario) {
+      throw new Error("Resposta de login inválida");
+    }
+
+    localStorage.setItem("access_token", accessToken);
+    localStorage.setItem("refresh_token", refreshToken);
+    localStorage.setItem("user", JSON.stringify(usuario));
+
+    setUser(usuario);
   }
 
   async function signUp(nome: string, email: string, senha: string) {
