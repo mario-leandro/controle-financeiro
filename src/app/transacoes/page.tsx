@@ -60,12 +60,6 @@ export default function Transacoes() {
 
   const saldoFinal = totalEntradas - totalSaidas;
 
-  const formatCurrency = (valor: number) =>
-    valor.toLocaleString("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-    });
-
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -174,7 +168,10 @@ export default function Transacoes() {
                               {transaction.data_transacao}
                             </TableCell>
                             <TableCell className="text-violet-900">
-                              {formatCurrency(transaction.valor)}
+                              {transaction.valor.toLocaleString("pt-BR", {
+                                style: "currency",
+                                currency: "BRL",
+                              })}
                             </TableCell>
                           </TableRow>
                         ))
@@ -222,7 +219,10 @@ export default function Transacoes() {
                               {transaction.data_transacao}
                             </TableCell>
                             <TableCell className="text-violet-900">
-                              {formatCurrency(transaction.valor)}
+                              {transaction.valor.toLocaleString("pt-BR", {
+                                style: "currency",
+                                currency: "BRL",
+                              })}
                             </TableCell>
                           </TableRow>
                         ))
