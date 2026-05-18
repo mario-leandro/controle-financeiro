@@ -200,6 +200,12 @@ export default function AddGanho() {
     );
   }
 
+  const categoriaSelecionada = categories.find(
+    (item) => String(item.id) === String(categoria),
+  );
+
+  const isCartao = categoriaSelecionada?.nome?.toLowerCase().includes("cartao");
+
   return (
     <div className="w-full h-screen flex flex-col items-center justify-center">
       <div className="w-full h-full flex flex-row justify-start items-start p-3 md:p-5 gap-5">
@@ -328,7 +334,7 @@ export default function AddGanho() {
             />
           </div>
 
-          {categoria === "cartao" && (
+          {isCartao && (
             <div className="w-full flex flex-col gap-3">
               <label className="text-base font-semibold text-violet-900">
                 Método de Pagamento
@@ -346,7 +352,7 @@ export default function AddGanho() {
             </div>
           )}
 
-          {categoria === "cartao" && metodoPagamento === "credito" && (
+          {isCartao && metodoPagamento === "credito" && (
             <div className="w-full flex flex-col gap-3">
               <label className="text-base font-semibold text-violet-900">
                 Número de Parcelas
