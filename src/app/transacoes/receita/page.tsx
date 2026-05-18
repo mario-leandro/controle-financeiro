@@ -12,19 +12,12 @@ import {
   getCategories,
 } from "@/services/transactions";
 import Alerta from "@/components/Alerta";
-
-type TipoTransacao = "receita" | "despesa";
-
-interface Account {
-  id: string;
-  nome: string;
-}
-
-interface Category {
-  id: string;
-  nome: string;
-  tipo: TipoTransacao;
-}
+import {
+  TipoTransacao,
+  Category,
+  Account,
+  MetodoPagamento,
+} from "@/types/financeiro";
 
 export default function AddGanho() {
   const router = useRouter();
@@ -34,16 +27,19 @@ export default function AddGanho() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loadingInitialData, setLoadingInitialData] = useState(true);
 
+  const [tipo, setTipo] = useState<TipoTransacao>("receita");
   const [categoria, setCategoria] = useState("");
+
   const [novaCategoria, setNovaCategoria] = useState("");
-
   const [conta, setConta] = useState("");
-  const [novaConta, setNovaConta] = useState("");
 
+  const [novaConta, setNovaConta] = useState("");
   const [descricao, setDescricao] = useState("");
   const [valor, setValor] = useState("");
+  const [metodoPagamento, setMetodoPagamento] =
+    useState<MetodoPagamento>("debito");
+  const [parcelas, setParcelas] = useState(1);
   const [data, setData] = useState("");
-  const [tipo, setTipo] = useState<TipoTransacao>("receita");
   const [observacao, setObservacao] = useState("");
   const [loading, setLoading] = useState(false);
   const [alerta, setAlerta] = useState<{
@@ -108,6 +104,16 @@ export default function AddGanho() {
       return;
     }
 
+    if (conta === "cartao") {
+      if (!metodoPagamento || !parcelas) {
+        setAlerta({
+          success: false,
+          message: "Selecione o método de pagamento e número de parcelas.",
+        });
+        return;
+      }
+    }
+
     try {
       setLoading(true);
 
@@ -159,6 +165,8 @@ export default function AddGanho() {
         tipo,
         descricao,
         valor: Number(valor),
+        metodo_pagamento: metodoPagamento,
+        parcelas: parcelas,
         data_transacao: data,
         observacao,
       });
@@ -319,6 +327,39 @@ export default function AddGanho() {
               placeholder="Ex: 2500.00"
             />
           </div>
+
+          {categoria === "cartao" && (
+            <div className="w-full flex flex-col gap-3">
+              <label className="text-base font-semibold text-violet-900">
+                Método de Pagamento
+              </label>
+              <select
+                value={metodoPagamento}
+                onChange={(e) =>
+                  setMetodoPagamento(e.target.value as MetodoPagamento)
+                }
+                className="w-full p-3 rounded-lg border border-violet-300"
+              >
+                <option value="debito">Débito</option>
+                <option value="credito">Crédito</option>
+              </select>
+            </div>
+          )}
+
+          {categoria === "cartao" && metodoPagamento === "credito" && (
+            <div className="w-full flex flex-col gap-3">
+              <label className="text-base font-semibold text-violet-900">
+                Número de Parcelas
+              </label>
+              <input
+                value={parcelas}
+                onChange={(e) => setParcelas(Number(e.target.value))}
+                type="number"
+                min="1"
+                className="w-full p-3 rounded-lg border border-violet-300"
+              />
+            </div>
+          )}
 
           <div className="w-full flex flex-col gap-3">
             <label className="text-base font-semibold text-violet-900">

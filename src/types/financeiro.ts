@@ -52,6 +52,8 @@ export interface CriarTransacaoParams {
   tipo: TipoTransacao;
   descricao: string;
   valor: number;
+  metodo_pagamento?: MetodoPagamento;
+  parcelas?: number;
   data_transacao?: string;
   observacao?: string;
 }
@@ -64,3 +66,5 @@ export type TipoConta =
   | "carteira"
   | "cartao"
   | "investimento";
+
+export type MetodoPagamento = "debito" | "credito";
