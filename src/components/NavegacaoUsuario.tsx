@@ -4,9 +4,11 @@ import {
   ArrowLeftRight,
   ChevronDown,
   CircleDollarSign,
+  CirclePlus,
   ClipboardMinus,
   Cog,
   Goal,
+  Landmark,
   LayoutDashboard,
   Menu,
   Plus,
@@ -38,26 +40,31 @@ export default function NavegacaoUsuario() {
       link: "/dashboard",
       icon: <LayoutDashboard size={20} />,
     },
-    // {
-    //   nome: "Relatórios",
-    //   link: "/relatorios",
-    //   icon: <ClipboardMinus size={20} />,
-    // },
     {
       nome: "Transações",
       link: "/transacoes",
       icon: <ArrowLeftRight size={20} />,
     },
-    // {
-    //   nome: "Metas",
-    //   link: "/metas",
-    //   icon: <Goal size={20} />,
-    // },
-    // {
-    //   nome: "Pagamentos",
-    //   link: "/pagamentos",
-    //   icon: <CircleDollarSign size={20} />,
-    // },
+    {
+      nome: "Contas Bancárias",
+      link: "/contas_bancarias",
+      icon: <Landmark size={20} />,
+    },
+    {
+      nome: "Categorias",
+      link: "/categoria",
+      icon: <CirclePlus size={20} />,
+    },
+    {
+      nome: "Metas Poupança",
+      link: "/metas",
+      icon: <Goal size={20} />,
+    },
+    {
+      nome: "Relatórios & Export",
+      link: "/relatorios",
+      icon: <ClipboardMinus size={20} />,
+    },
   ];
 
   return (
