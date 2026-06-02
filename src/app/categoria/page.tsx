@@ -6,6 +6,7 @@ import { useAuth } from "@/context/AuthContext";
 import { criarCategoria } from "@/services/transactions";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { icones } from "@/components/listaIcones";
 
 type TipoCategoria = "receita" | "despesa";
 
@@ -171,9 +172,32 @@ export default function AdicionarCategoria() {
 
             <div className="flex flex-col gap-3">
               <label className="text-base font-semibold text-violet-900">
-                Ícone
+                Selecione um Ícone decorativo
               </label>
-              <input
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                {icones.map((item) => (
+                  <label
+                    key={item.nome}
+                    className="flex items-center gap-2 cursor-pointer text-violet-900 bg-violet-200 rounded-lg p-2 transition-colors hover:scale-101"
+                  >
+                    <input
+                      type="radio"
+                      name="icone"
+                      value={item.nome}
+                      checked={icone === item.nome}
+                      onChange={(e) => setIcone(e.target.value)}
+                      hidden
+                    />
+                    {item.icone}
+                    <span className="text-sm font-medium text-violet-900">
+                      {item.nome}
+                    </span>
+                  </label>
+                ))}
+              </div>
+
+              {/* <input
                 value={icone}
                 onChange={(e) => setIcone(e.target.value)}
                 type="text"
@@ -189,7 +213,7 @@ export default function AdicionarCategoria() {
                   Lucide
                 </a>{" "}
                 para exibir depois na interface.
-              </p>
+              </p> */}
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3 pt-3">
