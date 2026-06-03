@@ -6,7 +6,7 @@ import { useAuth } from "@/context/AuthContext";
 import { criarCategoria } from "@/services/transactions";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { icones } from "@/components/listaIcones";
+import { cores, icones } from "@/components/listas";
 
 type TipoCategoria = "receita" | "despesa";
 
@@ -162,12 +162,22 @@ export default function AdicionarCategoria() {
               <label className="text-base font-semibold text-violet-900">
                 Cor
               </label>
-              <input
-                value={cor}
-                onChange={(e) => setCor(e.target.value)}
-                type="color"
-                className="w-20 h-12 rounded-lg border border-violet-300 bg-white"
-              />
+
+              <div className="flex flex-wrap gap-3">
+                {cores.map((corItem) => (
+                  <button
+                    key={corItem}
+                    type="button"
+                    onClick={() => setCor(corItem)}
+                    className={`w-8 h-8 rounded-full border-2 ${
+                      cor === corItem
+                        ? "border-violet-900"
+                        : "border-transparent"
+                    } cursor-pointer transition-transform hover:scale-110`}
+                    style={{ backgroundColor: corItem }}
+                  />
+                ))}
+              </div>
             </div>
 
             <div className="flex flex-col gap-3">

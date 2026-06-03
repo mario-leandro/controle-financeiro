@@ -70,3 +70,16 @@ export const icones = [
     icone: <Gamepad size={20} />,
   },
 ];
+
+export const cores = [
+  "#10B981",
+  "#14B8A6",
+  "#06B6D4",
+  "#F59E0B",
+  "#6366F1",
+  "#3B82F6",
+  "#EF4444",
+  "#EC4899",
+  "#F43F5E",
+  "#6B7280",
+];
