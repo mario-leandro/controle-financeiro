@@ -95,7 +95,34 @@ export default function Transacoes() {
           </div>
 
           <div className="w-full min-h-44 h-auto flex flex-col justify-between items-center bg-violet-50 p-5 rounded-lg shadow-lg">
-            <div className="w-full grid grid-cols-1 md:grid-cols-6 place-items-center gap-5 mb-5">
+            <div className="w-full grid grid-cols-1 md:grid-cols-5 place-items-center gap-5">
+              {/* Filtro de Data */}
+              <div className="w-full flex flex-row gap-3">
+                <div className="w-full">
+                  <label className="text-xs text-violet-700">De:</label>
+                  <input
+                    type="date"
+                    className="w-full h-10 p-3 rounded-lg border text-xs text-violet-700 border-violet-300 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                  />
+                </div>
+
+                <div className="w-full">
+                  <label className="text-xs text-violet-700">Até:</label>
+                  <input
+                    type="date"
+                    className="w-full h-10 p-3 rounded-lg text-xs text-violet-700 border border-violet-300 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                  />
+                </div>
+              </div>
+              {/* Filtro de Tipo */}
+              <div className="w-full">
+                <label className="text-xs text-violet-700">Tipo</label>
+                <select className="w-full h-10 text-xs p-3 text-violet-700 rounded-lg border border-violet-300 focus:outline-none focus:ring-2 focus:ring-violet-500">
+                  <option value="">Todos</option>
+                  <option value="receita">Apenas Receita</option>
+                  <option value="despesa">Apenas Despesa</option>
+                </select>
+              </div>
               {/* Filtro de Busca */}
               <div className="w-full relative">
                 <label className="text-xs text-violet-700">Buscar</label>
@@ -110,15 +137,6 @@ export default function Transacoes() {
                     className="w-full h-full pl-10 pr-4 py-2 text-xs text-violet-700 border border-violet-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
                   />
                 </div>
-              </div>
-              {/* Filtro de Tipo */}
-              <div className="w-full">
-                <label className="text-xs text-violet-700">Tipo</label>
-                <select className="w-full h-10 text-xs p-3 text-violet-700 rounded-lg border border-violet-300 focus:outline-none focus:ring-2 focus:ring-violet-500">
-                  <option value="">Todos</option>
-                  <option value="receita">Apenas Receita</option>
-                  <option value="despesa">Apenas Despesa</option>
-                </select>
               </div>
               {/* Filtro de Categoria */}
               <div className="w-full">
@@ -138,36 +156,30 @@ export default function Transacoes() {
                   <option value="despesa">Conta 2</option>
                 </select>
               </div>
-              {/* Filtro de Data */}
-              <div className="w-full flex flex-row gap-3">
-                <div className="w-full">
-                  <label className="text-xs text-violet-700">De:</label>
-                  <input
-                    type="date"
-                    className="w-full h-10 p-3 rounded-lg border text-xs text-violet-700 border-violet-300 focus:outline-none focus:ring-2 focus:ring-violet-500"
-                  />
-                </div>
-
-                <div className="w-full">
-                  <label className="text-xs text-violet-700">Até:</label>
-                  <input
-                    type="date"
-                    className="w-full h-10 p-3 rounded-lg text-xs text-violet-700 border border-violet-300 focus:outline-none focus:ring-2 focus:ring-violet-500"
-                  />
-                </div>
-              </div>
             </div>
 
-            <hr className="text-violet-400" />
+            <hr className="w-full h-1 text-violet-400 my-4" />
 
-            <div className="w-full flex flex-row justify-between items-center mt-3">
-              <div className="w-full">
-                <button
-                  type="button"
-                  className="w-full p-3 rounded-lg bg-violet-500 text-white font-semibold hover:bg-violet-600 focus:outline-none focus:ring-2 focus:ring-violet-500"
-                >
-                  Aplicar Filtros
+            <div className="w-full flex flex-row justify-between items-center">
+              <div className="flex flex-row items-center gap-3">
+                <p>Ordenar por:</p>
+                <button className="bg-violet-300 text-violet-900 hover:bg-violet-400 rounded-2xl px-2 py-1">
+                  Data
                 </button>
+                <button className="bg-violet-300 text-violet-900 hover:bg-violet-400 rounded-2xl px-2 py-1">
+                  Valor
+                </button>
+              </div>
+
+              <div className="w-auto">
+                <div className="w-full outline-none">
+                  <button
+                    type="button"
+                    className="w-full p-3 rounded-lg bg-violet-500 text-white font-semibold hover:bg-violet-600 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                  >
+                    Aplicar Filtros
+                  </button>
+                </div>
               </div>
             </div>
           </div>
