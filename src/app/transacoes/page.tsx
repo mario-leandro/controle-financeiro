@@ -15,6 +15,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useState, useEffect } from "react";
 import { Transaction } from "@/types/financeiro";
 import { getTransactions } from "@/services/dashboard";
+import { Search } from "lucide-react";
 
 export default function Transacoes() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -83,46 +84,90 @@ export default function Transacoes() {
         {/* Navegação do Usuario */}
         <NavegacaoUsuario />
 
-        <div className="w-full h-full flex flex-col gap-5">
-          <div className="w-full min-h-44 h-auto bg-violet-50 p-5 rounded-lg shadow-lg">
-            <div>
-              <p className="text-lg font-semibold text-violet-900 mb-5">
-                Resumo Financeiro
-              </p>
-              <div className="w-full flex flex-row justify-start items-center gap-5">
-                <div className="w-1/4 flex flex-col justify-between items-start shadow-lg rounded-lg gap-3 p-5 bg-violet-200">
-                  <p className="text-lg font-semibold text-green-900">
-                    Total de Entradas
-                  </p>
-                  <p className="text-2xl font-bold text-green-900">
-                    {totalEntradas.toLocaleString("pt-BR", {
-                      style: "currency",
-                      currency: "BRL",
-                    })}
-                  </p>
+        <div className="w-full h-full flex flex-col p-5 md:p-8 gap-5">
+          <div className="w-full flex flex-col justify-start items-start gap-2">
+            <h1 className="text-2xl md:text-3xl font-bold text-violet-900">
+              Transações
+            </h1>
+            <p className="text-md text-violet-700">
+              Lance receitas, despesas e consulte seu extrato detalhado.
+            </p>
+          </div>
+
+          <div className="w-full min-h-44 h-auto flex flex-col justify-between items-center bg-violet-50 p-5 rounded-lg shadow-lg">
+            <div className="w-full grid grid-cols-1 md:grid-cols-6 place-items-center gap-5 mb-5">
+              {/* Filtro de Busca */}
+              <div className="w-full relative">
+                <label className="text-xs text-violet-700">Buscar</label>
+                <div className="relative w-full h-10 rounded-lg border border-violet-300 focus:outline-none focus:ring-2 focus:ring-violet-500">
+                  <Search
+                    className="absolute ml-3 mt-3 text-violet-400 pointer-events-none"
+                    size={20}
+                  />
+                  <input
+                    type="text"
+                    placeholder="Buscar descrição..."
+                    className="w-full h-full pl-10 pr-4 py-2 text-xs text-violet-700 border border-violet-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
+                  />
                 </div>
-                <div className="w-1/4 flex flex-col justify-between items-start shadow-lg rounded-lg gap-3 p-5 bg-violet-200">
-                  <p className="text-lg font-semibold text-red-900">
-                    Total de Saídas
-                  </p>
-                  <p className="text-2xl font-bold text-red-900">
-                    {totalSaidas.toLocaleString("pt-BR", {
-                      style: "currency",
-                      currency: "BRL",
-                    })}
-                  </p>
+              </div>
+              {/* Filtro de Tipo */}
+              <div className="w-full">
+                <label className="text-xs text-violet-700">Tipo</label>
+                <select className="w-full h-10 text-xs p-3 text-violet-700 rounded-lg border border-violet-300 focus:outline-none focus:ring-2 focus:ring-violet-500">
+                  <option value="">Todos</option>
+                  <option value="receita">Apenas Receita</option>
+                  <option value="despesa">Apenas Despesa</option>
+                </select>
+              </div>
+              {/* Filtro de Categoria */}
+              <div className="w-full">
+                <label className="text-xs text-violet-700">Categoria</label>
+                <select className="w-full h-10 text-xs p-3 text-violet-700 rounded-lg border border-violet-300 focus:outline-none focus:ring-2 focus:ring-violet-500">
+                  <option value="">Todas</option>
+                  <option value="receita">Receita</option>
+                  <option value="despesa">Despesa</option>
+                </select>
+              </div>
+              {/* Filtro de Contas */}
+              <div className="w-full">
+                <label className="text-xs text-violet-700">Conta</label>
+                <select className="w-full h-10 text-xs p-3 text-violet-700 rounded-lg border border-violet-300 focus:outline-none focus:ring-2 focus:ring-violet-500">
+                  <option value="">Todas</option>
+                  <option value="receita">Conta 1</option>
+                  <option value="despesa">Conta 2</option>
+                </select>
+              </div>
+              {/* Filtro de Data */}
+              <div className="w-full flex flex-row gap-3">
+                <div className="w-full">
+                  <label className="text-xs text-violet-700">De:</label>
+                  <input
+                    type="date"
+                    className="w-full h-10 p-3 rounded-lg border text-xs text-violet-700 border-violet-300 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                  />
                 </div>
-                <div className="w-1/4 flex flex-col justify-between items-start shadow-lg rounded-lg gap-3 p-5 bg-violet-200">
-                  <p className="text-lg font-semibold text-blue-900">
-                    Saldo Final
-                  </p>
-                  <p className="text-2xl font-bold text-blue-900">
-                    {saldoFinal.toLocaleString("pt-BR", {
-                      style: "currency",
-                      currency: "BRL",
-                    })}
-                  </p>
+
+                <div className="w-full">
+                  <label className="text-xs text-violet-700">Até:</label>
+                  <input
+                    type="date"
+                    className="w-full h-10 p-3 rounded-lg text-xs text-violet-700 border border-violet-300 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                  />
                 </div>
+              </div>
+            </div>
+
+            <hr className="text-violet-400" />
+
+            <div className="w-full flex flex-row justify-between items-center mt-3">
+              <div className="w-full">
+                <button
+                  type="button"
+                  className="w-full p-3 rounded-lg bg-violet-500 text-white font-semibold hover:bg-violet-600 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                >
+                  Aplicar Filtros
+                </button>
               </div>
             </div>
           </div>
